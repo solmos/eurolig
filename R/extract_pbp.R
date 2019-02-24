@@ -1,3 +1,12 @@
+#' Extract play-by-play data for Euroleague games
+#'
+#' @param game_code An integer as specified in the game url
+#' @param season_code A string as specified in the game url
+#'
+#' @return A data frame
+#' @export
+#'
+#' @examples
 extract_pbp <- function(game_code, season_code) {
     # Data scraping ----
     base_api <- "https://live.euroleague.net/api/PlayByPlay"
@@ -26,6 +35,7 @@ extract_pbp <- function(game_code, season_code) {
 
     # Data wrangling ----
     pbp_per_quarter <- lapply(all_data, function(x) x[7:11])
+
     pbp_raw_list <- lapply(pbp_per_quarter, function(x) do.call("rbind", x))
 
     # When binding the quarters the row names identify the observation
@@ -51,7 +61,21 @@ extract_pbp <- function(game_code, season_code) {
         x
     }
     pbp_list <- lapply(pbp_list, delete_rownames)
-    pbp_list <- Map(cbind, pbp_list, GAMECODE = game_code, SEASONCODE = season_code)
+    pbp_list <- Map(cbind, pbp_list,
+                    GAMECODE = game_code,
+                    SEASONCODE = season_code)
+
+    # We need a variable identifying the home team
+    home_team_names <- sapply(all_data, function(x) x$TeamA)
+    away_team_names <- sapply(all_data, function(x) x$TeamB)
+    pbp_list <- Map(cbind, pbp_list,
+                    HOME_TEAM = home_team_names,
+                    AWAY_TEAM = away_team_names)
+
+    # Specify the score at every play using helper function add_points
+    pbp_list <- lapply(pbp_list, add_points)
+
+
     pbp_df <- do.call("rbind", pbp_list)
 
     # The time when a period/game begins or ends is missing
@@ -59,36 +83,24 @@ extract_pbp <- function(game_code, season_code) {
     pbp_df[which(pbp_df$PLAYTYPE == "EP"), "MARKERTIME"] <- "00:00"
     pbp_df[which(pbp_df$PLAYTYPE == "EG"), "MARKERTIME"] <- "00:00"
 
+    # Transform time remaining in quarter to elapsed time since BG
+    t_substract <- paste0(as.numeric(pbp_df$QUARTER) * 10, ":00") %>%
+        lubridate::ms() %>%
+        lubridate::as.duration()
+    t_remaining_in_q <- lubridate::ms(pbp_df$MARKERTIME) %>%
+        lubridate::as.duration()
+    t_elapsed <- lubridate::as.period(t_substract - t_remaining_in_q)  # GIVES NOTE!!!
+
     pbp <- pbp_df %>%
         dplyr::mutate(CODETEAM = as.factor(trimws(CODETEAM)),
                       PLAYER_ID = as.factor(trimws(PLAYER_ID)),
                       PLAYTYPE = as.factor(PLAYTYPE),
                       PLAYER = as.factor(PLAYER),
                       TEAM = as.factor(TEAM),
-                      DORSAL = as.factor(as.numeric(DORSAL))
+                      DORSAL = as.factor(as.numeric(DORSAL)),
+                      ELAPSEDTIME = as.numeric(t_elapsed),
+                      HOME = as.character(HOME_TEAM) == as.character(TEAM)
                       )
-    pbp_df
-}
 
-library(tidyverse)
-game_code <- 172:173
-season_code <- rep("E2018", 2)
-x <- extract_pbp(game_code, season_code)
-data_tibble <- as_tibble(x)
-data_tibble
-data_tibble$CODETEAM
-str(x)
-pbp <- x %>%
-    dplyr::mutate(CODETEAM = factor(trimws(CODETEAM), exclude = ""),
-                  PLAYER_ID = factor(trimws(PLAYER_ID), exclude = ""),
-                  PLAYTYPE = factor(PLAYTYPE),
-                  PLAYER = factor(PLAYER),
-                  TEAM = factor(TEAM),
-                  DORSAL = as.numeric(DORSAL)
-    )
-str(pbp)
-levels(pbp$PLAYER_ID)
-filter(pbp, PLAYER_ID == "CO_B")
-pbp[is.na(pbp$PLAYER),]
-is.na(pbp$PLAYER_ID)
-pbp$PLAYER_ID
+    pbp
+}
