@@ -63,13 +63,14 @@ extract_pbp <- function(game_code, season_code) {
     pbp_df[which(pbp_df$PLAYTYPE == "EP"), "MARKERTIME"] <- "00:00"
     pbp_df[which(pbp_df$PLAYTYPE == "EG"), "MARKERTIME"] <- "00:00"
 
-    # Transform time remaining in quarter to elapsed time since BG
-    t_substract <- paste0(as.numeric(pbp_df$QUARTER) * 10, ":00") %>%
-        lubridate::ms() %>%
-        lubridate::as.duration()
-    t_remaining_in_q <- lubridate::ms(pbp_df$MARKERTIME) %>%
-        lubridate::as.duration()
-    t_elapsed <- lubridate::as.period(t_substract - t_remaining_in_q)  # GIVES NOTE!!!
+    # Create a variable specifying the seconds elapsed since start of game:
+    #   Each quarter has 600 seconds
+    #   Each over time has 300 seconds
+
+    seconds_per_quarter <- 600 * as.numeric(pbp_df$QUARTER)
+    # TODO: Deal with over times
+    seconds_remaining_in_q <- as.numeric(lubridate::ms(pbp_df$MARKERTIME))
+    seconds_elapsed <- seconds_per_quarter - seconds_remaining_in_q
 
     pbp <- pbp_df %>%
         dplyr::mutate(CODETEAM = as.factor(trimws(CODETEAM)),
@@ -78,7 +79,7 @@ extract_pbp <- function(game_code, season_code) {
                       PLAYER = as.factor(PLAYER),
                       TEAM = as.factor(TEAM),
                       DORSAL = as.factor(as.numeric(DORSAL)),
-                      ELAPSEDTIME = as.numeric(t_elapsed),
+                      ELAPSEDTIME = seconds_elapsed,
                       HOME = as.character(HOME_TEAM) == as.character(TEAM)
                       )
 
