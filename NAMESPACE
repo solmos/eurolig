@@ -2,3 +2,4 @@
 
 export(extract_pbp)
 export(get_assists)
+importFrom(magrittr,"%>%")

@@ -3,39 +3,19 @@
 #' @param game_code An integer as specified in the game url
 #' @param season_code A string as specified in the game url
 #'
+#' @importFrom magrittr %>%
+#'
 #' @return A data frame
 #' @export
 #'
 #' @examples
 extract_pbp <- function(game_code, season_code) {
-    # Data scraping ----
-    base_api <- "https://live.euroleague.net/api/PlayByPlay"
-    n_games <- length(game_code)
-    api_requests <- vector("list", n_games)
-    for (i in 1:(n_games - 1)) {
-        api_requests[[i]] <- httr::GET(base_api,
-                                       query = list(gamecode = game_code[i],
-                                                    seasoncode = season_code[i]
-                                                    )
-                                       )
-        cat(paste("Obtaining data for game", game_code[i], "\n"))
-        Sys.sleep(15)
-    }
-    cat(paste("Obtaining data for game", game_code[n_games], "\n"))
-    api_requests[[n_games]] <- httr::GET(base_api,
-                                         query = list(
-                                             gamecode = game_code[n_games],
-                                             seasoncode = season_code[n_games]
-                                             )
-                                         )
+    # Scrape data and update game and season codes in case bad requests occurr
+    all_data <- scrape_pbp(game_code, season_code)
+    game_code <- attr(all_data, "game_code")
+    season_code <- attr(all_data, "season_code")
 
-    json_data <- lapply(api_requests, httr::content,
-                           as = "text", encoding = "UTF-8")
-    all_data <- lapply(json_data, jsonlite::fromJSON)
-
-    # Data wrangling ----
     pbp_per_quarter <- lapply(all_data, function(x) x[7:11])
-
     pbp_raw_list <- lapply(pbp_per_quarter, function(x) do.call("rbind", x))
 
     # When binding the quarters the row names identify the observation

@@ -1,5 +1,5 @@
 Package: euroleaguer
-Title: Tools to Extract and Analyze Euroleague Basketball Data
+Title: euroleaguer: Extract and analyze Euroleague basketball data
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Sergio",
@@ -11,3 +11,7 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
+Imports: 
+    dplyr,
+    magrittr,
+    ggplot2
