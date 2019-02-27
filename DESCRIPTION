@@ -6,7 +6,9 @@ Authors@R:
            family = "Olmos Pardo",
            role = c("aut", "cre"),
            email = "s.olmos.pardo@gmail.com")
-Description: Tools to extract and analyze Euroleague basketball data.
+Description: API wrapper around the official website of the Euroleague for easy
+    extraction of basketball data. The package also provides tools to analyze 
+    and visualize the data. 
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
