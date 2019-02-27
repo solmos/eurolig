@@ -6,7 +6,7 @@ Authors@R:
            family = "Olmos Pardo",
            role = c("aut", "cre"),
            email = "s.olmos.pardo@gmail.com")
-Description: What the package does (one paragraph).
+Description: Tools to extract and analyze Euroleague basketball data.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -14,4 +14,8 @@ RoxygenNote: 6.1.1
 Imports: 
     dplyr,
     magrittr,
-    ggplot2
+    ggplot2,
+    httr,
+    jsonlite,
+    lubridate,
+    stringr
