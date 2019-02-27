@@ -1,5 +1,5 @@
-Package: euroleaguer
-Title: euroleaguer: Extract and analyze Euroleague basketball data
+Package: eurolig
+Title: eurolig: Extract and analyze Euroleague basketball data
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Sergio",
