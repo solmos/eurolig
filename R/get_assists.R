@@ -13,6 +13,7 @@ get_assists <- function(df) {
     assists_df <- data.frame(
         PASSER = df$PLAYER[assists_idx],
         SHOOTER = df$PLAYER[fg_idx],
+        POINTS = df$PLAYTYPE[fg_idx],
         TEAM = df$TEAM[fg_idx],
         TIME = df$ELAPSEDTIME[fg_idx],
         GAMECODE = df$GAMECODE[fg_idx],
