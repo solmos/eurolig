@@ -39,5 +39,6 @@ get_assists <- function(df) {
     assists_df$POINTS[assists_df$PLAYTYPE == "2FGM"] <- 2
     assists_df$POINTS[assists_df$PLAYTYPE == "3FGM"] <- 3
     assists_df$POINTS[assists_df$PLAYTYPE == "FTM"] <- assisted_ft_points
-    assists_df
+
+    tibble::as_tibble(assists_df)
 }
