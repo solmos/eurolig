@@ -8,7 +8,7 @@ Authors@R:
            email = "s.olmos.pardo@gmail.com")
 Description: API wrapper around the official website of the Euroleague for easy
     extraction of basketball data. The package also provides tools to analyze 
-    and visualize the data. 
+    and visualize the data.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -21,3 +21,5 @@ Imports:
     jsonlite,
     lubridate,
     stringr
+Suggests: 
+    testthat
