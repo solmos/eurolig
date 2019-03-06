@@ -1,6 +1,16 @@
-scrape_pbp <- function(game_code, season_code) {
+#' Scrape data from Eurleague website
+#'
+#' @param game_code
+#' @param season_code
+#'
+#' @return
+#' @export
+#'
+#' @examples
+scrape_pbp <- function(game_code, season) {
     base_api <- "https://live.euroleague.net/api/PlayByPlay"
     n_games <- length(game_code)
+    season_code <- paste0("E", season)
 
     if (length(season_code) == 1) {
         season_code <- rep(season_code, n_games)

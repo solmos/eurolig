@@ -9,9 +9,9 @@
 #' @export
 #'
 #' @examples
-extract_pbp <- function(game_code, season_code) {
+extract_pbp <- function(game_code, season) {
     # Scrape data and update game and season codes in case bad requests occurr
-    all_data <- scrape_pbp(game_code, season_code)
+    all_data <- scrape_pbp(game_code, season)
     game_code <- attr(all_data, "game_code")
     season_code <- attr(all_data, "season_code")
 
