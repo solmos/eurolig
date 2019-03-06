@@ -34,12 +34,12 @@ plot_assists <- function(pbp_df, team) {
                                          vertices = nodes,
                                          directed = TRUE)
 
-    igraph::V(net)$size <- nodes$value + 20
+    igraph::V(net)$size <- scale(nodes$value) + 20
     igraph::V(net)$color <- "slategray2"
     igraph::V(net)$frame.color <- "white"
     igraph::V(net)$label.color <- "black"
     igraph::V(net)$label.family <- "Mono"
-    igraph::E(net)$width <- n_assists$n * 2
+    igraph::E(net)$width <- edges$n * 2
 
     plot(net, edge.arrow.size = .3, edge.curved = 0.4)
 }
