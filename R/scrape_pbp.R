@@ -1,7 +1,7 @@
 #' Scrape data from Eurleague website
 #'
-#' @param game_code
-#' @param season_code
+#' @param game_code An integer as specified in the game url
+#' @param season The starting year of the desired season
 #'
 #' @return
 #' @export

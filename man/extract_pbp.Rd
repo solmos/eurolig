@@ -4,12 +4,12 @@
 \alias{extract_pbp}
 \title{Extract play-by-play data for Euroleague games}
 \usage{
-extract_pbp(game_code, season_code)
+extract_pbp(game_code, season)
 }
 \arguments{
 \item{game_code}{An integer as specified in the game url}
 
-\item{season_code}{A string as specified in the game url}
+\item{season}{The starting year of the desired season}
 }
 \value{
 A data frame

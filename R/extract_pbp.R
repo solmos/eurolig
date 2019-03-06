@@ -1,7 +1,7 @@
 #' Extract play-by-play data for Euroleague games
 #'
 #' @param game_code An integer as specified in the game url
-#' @param season_code A string as specified in the game url
+#' @param season The starting year of the desired season
 #'
 #' @importFrom magrittr %>%
 #'

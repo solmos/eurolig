@@ -20,6 +20,10 @@ Imports:
     httr,
     jsonlite,
     lubridate,
-    stringr
+    stringr,
+    igraph,
+    rvest,
+    tibble,
+    xml2
 Suggests: 
     testthat
