@@ -6,7 +6,10 @@
 #' @export
 #'
 #' @examples
-get_assists <- function(df) {
+get_assists <- function(df, team) {
+    if (!missing(team)) {
+        df <- dplyr::filter(df, TEAM == team)
+    }
     # Assisted FGM are recorded in the row above the assist row
     assists_idx <- which(df$PLAYTYPE == "AS")
     fg_idx <- assists_idx - 1
