@@ -11,6 +11,9 @@ scrape_pbp(game_code, season)
 
 \item{season}{The starting year of the desired season}
 }
+\value{
+A data frame of raw data returned by the API
+}
 \description{
 Scrape data from Eurleague website
 }

@@ -1,3 +1,14 @@
+#' Plot assists network
+#'
+#' Uses igpraph to plot a network graph showing who assisted who from play-by-play data.
+#'
+#' @param pbp_df Data frame with play-by-play data
+#' @param team
+#'
+#' @return
+#' @export
+#'
+#' @examples
 plot_assists <- function(pbp_df, team) {
     team_df <- dplyr::filter(pbp_df, TEAM == team)
     assist_df <- get_assists(team_df)

@@ -1,3 +1,14 @@
+#' Extract results for a team
+#'
+#' Get results of the games of a given team and season
+#'
+#' @param team
+#' @param season
+#'
+#' @return
+#' @export
+#'
+#' @examples
 scrape_team_results <- function(team, season) {
     base_url <- "https://www.euroleague.net/competition/teams/showteam?"
     query <- paste0("clubcode=", team,"&seasoncode=E", season, "#!games")

@@ -1,3 +1,13 @@
+#' Create home and away points variables
+#'
+#' Helper function to create points variables. Used to add these variables to output data frame in extract_pbp().
+#'
+#' @param df A data frame of play-by-play data
+#'
+#' @return A data frame with home and away points for each action of pbp
+#' @export
+#'
+#' @examples
 add_points <- function(df) {
     points_home <- numeric(nrow(df))
     points_away <- numeric(nrow(df))

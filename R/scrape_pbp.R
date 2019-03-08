@@ -3,7 +3,7 @@
 #' @param game_code An integer as specified in the game url
 #' @param season The starting year of the desired season
 #'
-#' @return
+#' @return A data frame of raw data returned by the API
 #' @export
 #'
 #' @examples

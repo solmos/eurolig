@@ -1,3 +1,11 @@
+#' Plot score of a game
+#'
+#' @param df
+#'
+#' @return
+#' @export
+#'
+#' @examples
 plot_score <- function(df) {
     ggplot(df) +
         geom_line(aes(ELAPSEDTIME, POINTS_HOME), color = "skyblue") +

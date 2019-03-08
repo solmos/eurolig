@@ -30,12 +30,11 @@ devtools::install_github("solmos/eurolig")
 
 ## Usage
 
-Let's say we want to analyze play-by-play data from the Championship game of the 2017-2018 season between Real Madrid and Fenerbache Dogus Istanbul.
+Let's say we want to analyze play-by-play data from the Championship game of the 2017-2018 season between Real Madrid and Fenerbache Dogus Istanbul. We can obtain the data by entering the game code and the season to the function `extract_pbp()`. The game code for the game can be found in the game's [URL](https://www.euroleague.net/main/results/showgame?gamecode=260&seasoncode=E2017).
 
 ```{r}
 library(eurolig)
 pbp <- extract_pbp(game_code = 260, season = 2017)
+str(pbp)
 ```
 
-The game code for the games can be found in the game's url
-By looking at the url of that game, we identify that the its game code is 260.
