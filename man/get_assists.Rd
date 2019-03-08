@@ -4,7 +4,7 @@
 \alias{get_assists}
 \title{Get who assisted who from play-by-play data}
 \usage{
-get_assists(df)
+get_assists(df, team)
 }
 \arguments{
 \item{df}{Play-by-play data frame as produced by extract_pbp()}
