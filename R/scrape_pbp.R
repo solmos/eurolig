@@ -28,21 +28,30 @@ scrape_pbp <- function(game_code, season) {
     if (n_games == 1) {
         api_requests[[1]] <- httr::GET(base_api,
                                        query = list(gamecode = game_code,
-                                                    seasoncode = season_code))
+                                                    seasoncode = season_code),
+                                       httr::timeout(2))
     } else {
         for (i in 1:(n_games - 1)) {
             query_list <- list(gamecode = game_code[i],
                                seasoncode = season_code[i])
-            cat("Obtaining data for game", game_code[i], "\n")
+            cat("Obtaining data for game", game_code[i])
             api_requests[[i]] <- httr::GET(base_api,
-                                           query = query_list)
+                                           query = query_list,
+                                           httr::timeout(2))
             Sys.sleep(delay)
+            if (httr::http_type(api_requests[[i]]) == "application/json") {
+                cat(crayon::green(" \U2713", "\n"))
+            } else cat(crayon::red(" \U2717", "\n"))
         }
-        cat("Obtaining data for game", game_code[n_games], "\n")
+        cat("Obtaining data for game", game_code[n_games])
         query_list <- list(gamecode = game_code[n_games],
                            seasoncode = season_code[n_games])
         api_requests[[n_games]] <- httr::GET(base_api,
-                                             query = query_list)
+                                             query = query_list,
+                                             httr::timeout(2))
+        if (httr::http_type(api_requests[[n_games]]) == "application/json") {
+            cat(crayon::green(" \U2713", "\n"))
+        } else cat(crayon::red(" \U2717", "\n"))
     }
 
     # Dealing with request errors ====
