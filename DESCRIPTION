@@ -24,6 +24,7 @@ Imports:
     igraph,
     rvest,
     tibble,
-    xml2
+    xml2,
+    rlang
 Suggests: 
     testthat

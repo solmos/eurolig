@@ -5,6 +5,8 @@
 #'
 #' @importFrom magrittr %>%
 #'
+#' @importFrom rlang .data
+#'
 #' @return A data frame
 #' @export
 #'
@@ -72,16 +74,27 @@ extract_pbp <- function(game_code, season) {
     seconds_remaining_in_q <- as.numeric(lubridate::ms(pbp_df$MARKERTIME))
     seconds_elapsed <- seconds_per_quarter - seconds_remaining_in_q
 
-    pbp <- pbp_df %>%
-        dplyr::mutate_(CODETEAM = as.factor(trimws(~CODETEAM)),
-                      PLAYER_ID = as.factor(trimws(~PLAYER_ID)),
-                      PLAYTYPE = as.factor(~PLAYTYPE),
-                      PLAYER = as.factor(~PLAYER),
-                      TEAM = as.factor(~TEAM),
-                      DORSAL = as.factor(as.numeric(~DORSAL)),
-                      ELAPSEDTIME = seconds_elapsed,
-                      HOME = as.character(~HOME_TEAM) == as.character(~TEAM)
-                      )
 
-    pbp
+    pbp <- pbp_df %>%
+        dplyr::transmute(
+            game_code = factor(GAMECODE),
+            play_number = .data$NUMBEROFPLAY,
+            team_code = factor(trimws(.data$CODETEAM), exclude = ""),
+            player_name = factor(.data$PLAYER, exclude = ""),
+            play_type = factor(.data$PLAYTYPE),
+            time_remaining = .data$MARKERTIME,
+            quarter = .data$QUARTER,
+            points_home = POINTS_HOME,
+            points_away = POINTS_AWAY,
+            team_name = factor(.data$TEAM, exclude = ""),
+            player_id = factor(trimws(.data$PLAYER_ID), exclude = ""),
+            player_dorsal = as.numeric(.data$DORSAL),
+            play_info = .data$PLAYINFO,
+            seconds = seconds_elapsed,
+            home_team = .data$HOME_TEAM,
+            away_team = .data$AWAY_TEAM,
+            home = as.character(.data$HOME_TEAM) == as.character(.data$TEAM),
+            season = .data$SEASONCODE
+            )
+    tibble::as_tibble(pbp)
 }
