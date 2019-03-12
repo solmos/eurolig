@@ -73,14 +73,14 @@ extract_pbp <- function(game_code, season) {
     seconds_elapsed <- seconds_per_quarter - seconds_remaining_in_q
 
     pbp <- pbp_df %>%
-        dplyr::mutate(CODETEAM = as.factor(trimws(CODETEAM)),
-                      PLAYER_ID = as.factor(trimws(PLAYER_ID)),
-                      PLAYTYPE = as.factor(PLAYTYPE),
-                      PLAYER = as.factor(PLAYER),
-                      TEAM = as.factor(TEAM),
-                      DORSAL = as.factor(as.numeric(DORSAL)),
+        dplyr::mutate_(CODETEAM = as.factor(trimws(~CODETEAM)),
+                      PLAYER_ID = as.factor(trimws(~PLAYER_ID)),
+                      PLAYTYPE = as.factor(~PLAYTYPE),
+                      PLAYER = as.factor(~PLAYER),
+                      TEAM = as.factor(~TEAM),
+                      DORSAL = as.factor(as.numeric(~DORSAL)),
                       ELAPSEDTIME = seconds_elapsed,
-                      HOME = as.character(HOME_TEAM) == as.character(TEAM)
+                      HOME = as.character(~HOME_TEAM) == as.character(~TEAM)
                       )
 
     pbp
