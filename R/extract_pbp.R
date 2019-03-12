@@ -15,7 +15,7 @@ extract_pbp <- function(game_code, season) {
     # Scrape data and update game and season codes in case bad requests occurr
     all_data <- scrape_pbp(game_code, season)
     game_code <- attr(all_data, "game_code")
-    season_code <- attr(all_data, "season_code")
+    season_code <- attr(all_data, "season")
 
     pbp_per_quarter <- lapply(all_data, function(x) x[7:11])
     pbp_raw_list <- lapply(pbp_per_quarter, function(x) do.call("rbind", x))
@@ -77,15 +77,15 @@ extract_pbp <- function(game_code, season) {
 
     pbp <- pbp_df %>%
         dplyr::transmute(
-            game_code = factor(GAMECODE),
+            game_code = factor(.data$GAMECODE),
             play_number = .data$NUMBEROFPLAY,
             team_code = factor(trimws(.data$CODETEAM), exclude = ""),
             player_name = factor(.data$PLAYER, exclude = ""),
             play_type = factor(.data$PLAYTYPE),
             time_remaining = .data$MARKERTIME,
             quarter = .data$QUARTER,
-            points_home = POINTS_HOME,
-            points_away = POINTS_AWAY,
+            points_home = .data$POINTS_HOME,
+            points_away = .data$POINTS_AWAY,
             team_name = factor(.data$TEAM, exclude = ""),
             player_id = factor(trimws(.data$PLAYER_ID), exclude = ""),
             player_dorsal = as.numeric(.data$DORSAL),
@@ -94,7 +94,7 @@ extract_pbp <- function(game_code, season) {
             home_team = .data$HOME_TEAM,
             away_team = .data$AWAY_TEAM,
             home = as.character(.data$HOME_TEAM) == as.character(.data$TEAM),
-            season = .data$SEASONCODE
+            season = factor(.data$SEASONCODE)
             )
     tibble::as_tibble(pbp)
 }

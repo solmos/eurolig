@@ -12,11 +12,12 @@ scrape_pbp <- function(game_code, season) {
     n_games <- length(game_code)
     season_code <- paste0("E", season)
 
-    if (length(season_code) == 1) {
-        season_code <- rep(season_code, n_games)
-    } else if (length(season_code) != n_games) {
-        warning("season_code must be length 1 or same length as game_code \n")
+    if (length(season) == 1) {
+        season <- rep(season, n_games)
+    } else if (length(season) != n_games) {
+        warning("season must be length 1 or same length as game_code \n")
     }
+    season_code <- paste0("E", season)
 
     api_requests <- vector("list", n_games)
 
@@ -69,6 +70,6 @@ scrape_pbp <- function(game_code, season) {
                         as = "text", encoding = "UTF-8")
     all_data <- lapply(json_data, jsonlite::fromJSON)
     attr(all_data, "game_code") <- good_game_codes
-    attr(all_data, "season_code") <- season_code[!errors]
+    attr(all_data, "season") <- season[!errors]
     all_data
 }

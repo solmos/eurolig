@@ -25,6 +25,7 @@ Imports:
     rvest,
     tibble,
     xml2,
-    rlang
+    rlang,
+    crayon
 Suggests: 
     testthat
