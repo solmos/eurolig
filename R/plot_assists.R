@@ -9,22 +9,21 @@
 #' @export
 #'
 #' @examples
-plot_assists <- function(pbp_df, team) {
-    team_df <- dplyr::filter(pbp_df, TEAM == team)
-    assist_df <- get_assists(team_df)
+plot_assists <- function(pbp_df, team_code) {
+    assist_df <- get_assists(pbp_df, team_code)
     edges <- assist_df %>%
-        dplyr::group_by(PASSER, SHOOTER) %>%
+        dplyr::group_by(passer, shooter) %>%
         dplyr::count()
 
     nodes <- assist_df %>%
-        dplyr::group_by(PASSER) %>%
-        dplyr::summarise(pts_generated = sum(POINTS))
+        dplyr::group_by(passer) %>%
+        dplyr::summarise(pts_generated = sum(points))
 
     # We need to add the players with no assists to nodes
-    all_node_ids <- unique(c(as.character(edges$PASSER),
-                             as.character(edges$SHOOTER)))
-    non_passers <- all_node_ids[!all_node_ids %in% edges$PASSER]
-    non_passers_df <- data.frame(PASSER = non_passers,
+    all_node_ids <- unique(c(as.character(edges$passer),
+                             as.character(edges$shooter)))
+    non_passers <- all_node_ids[!all_node_ids %in% edges$passer]
+    non_passers_df <- data.frame(passer = non_passers,
                                  pts_generated = 0)
     nodes <- rbind(nodes, non_passers_df)
 
@@ -35,9 +34,9 @@ plot_assists <- function(pbp_df, team) {
                                  stringsAsFactors = FALSE)
 
     nodes <- nodes %>%
-        dplyr::transmute(id = as.character(PASSER),
+        dplyr::transmute(id = as.character(passer),
                          value = pts_generated,
-                         tittle = PASSER) %>%
+                         tittle = passer) %>%
         dplyr::left_join(node_labels_df, by = "id")
 
     # Igraph

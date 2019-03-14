@@ -94,7 +94,7 @@ extract_pbp <- function(game_code, season) {
             home_team = .data$HOME_TEAM,
             away_team = .data$AWAY_TEAM,
             home = as.character(.data$HOME_TEAM) == as.character(.data$TEAM),
-            season = factor(.data$SEASONCODE)
+            season = as.integer(.data$SEASONCODE)
             )
     tibble::as_tibble(pbp)
 }
