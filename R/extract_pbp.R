@@ -27,6 +27,13 @@ extract_pbp <- function(game_code, season) {
     quarter_alpha <- lapply(quarters_variable,
                              stringr::str_extract,
                              pattern = "[A-z]+")
+
+    # We need a special way to deal with double or more over times
+    # EP_idx <- lapply(pbp_raw_list,
+    #                  function(x) which(x$PLAYTYPE == "EP"))
+    # extra_over_times <- sapply(EP_idx, function(x) length(x) > 5)
+
+
     recode_quarters <- function(x) {
         v <- dplyr::recode(x,
                            FirstQuarter = 1,
