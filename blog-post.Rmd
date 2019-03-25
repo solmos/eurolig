@@ -1,0 +1,141 @@
+---
+title: "Untitled"
+author: "Sergio Olmos Pardo"
+date: "March 14, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
+```
+
+## Introducción
+
+`eurolig` es un paquete de R que he creado para facilitar la obtención y el análisis de datos de partidos de Euroliga. En esta entrada muestro cómo utilizar `eurolig` para analizar diferentes aspectos de cómo se pasa el balón el FC Barcelona en esta Euroliga 2018-2019. En concreto, estamos interesados en averiguar:
+
+1. Quién asiste a quién
+
+2. Qué tipo de tiro genera cada jugador cuando da una asistencia
+
+3. Cuántos puntos generan las asistencias de cada jugador
+
+4. Cómo visualizar las asistencias de un partido
+
+## eurolig
+
+El paquete `eurolig` está en fase experimental y todavía tiene bastantes bugs. En este momento tan solo permite descargar datos jugada-a-jugada (*play-by-play*) pero espero poder incluir la posibilidad de trabajar con otro tipo de datos como la localización de los tiros o estadísticas tradicionales.
+
+Podeis instalar el paquete desde Github:
+```{r, eval = FALSE}
+# install.packages("devtools")
+devtools::install_github("solmos/eurolig")
+```
+
+Tened en cuenta, sin embargo, que el paquete está en su fase inicial y habrá numerosos cambios con los problemas de reproducibilidad que esto supone.
+
+Podeis estar al tanto de las novedades del paquete, así como echarle un ojo al código, en el [repositorio] del paquete.
+
+
+## Análisis
+
+Los datos jugada-a-jugada nos permiten saber muchas cosas que no vemos en la tabla de estadísticas convencional. Son este tipo de datos los que nos van a permitir responder a nuestras preguntas sobre las asistencias del FC Barcelona en esta Euroliga.
+
+### Obtención de los datos
+
+Podemos obtener los datos jugada-a-jugada introduciendo el código del partido/s junto con el año de la temporada correspondiente a la función `extract_pbp()`.
+
+El código del partido lo podemos encontrar en la propia URL de la página del partido. Por ejemplo, el último partido que disputó el FC Barcelona en esta Euroliga en el momento de escribir esto fue contra el Bayern de Munich en la ciudad alemana. La URL para este partido en la página oficial es
+
+    https://www.euroleague.net/main/results/showgame?gamecode=219&seasoncode=E2018
+
+Observamos que el código del partido (en negrita) es 196. Introduciendo este código junto con el año de inicio de esta temporada en la función `extract_pbp()` obtenemos los datos jugada-a-jugada de este partido en un data frame:
+
+```{r}
+library(eurolig)
+game_pbp <- extract_pbp(game_code = 196, season = 2018)
+# load("~/game-pbp.RData")
+str(game_pbp)
+```
+
+En el presente análisis queremos analizar más de un partido. En concreto, queremos obtener todos los partidos del Real Madrid en la presente campaña. En lugar de ir buscando en la página web de la Euroliga todos los códigos de los partidos disputados por el Madrid, podemos utilizar la función `extract_team_pbp()`. Con esta función basta con introducir el código del equipo y el año para obtener todos los partidos que ha disputado ese equipo en esa temporada.
+
+Procedemos pues a descargar los datos de todos los partidos que ha disputado el actual Real Madrid hasta la fecha (2019-03-08):
+
+```{r}
+# Load data to save time while writing. Delete later
+# load("~/2018-mad-pbp.RData")
+pbp <- extract_team_pbp(team = "MAD", season = 2018)
+
+# Comprobar el número de partidos obtenidos
+length(unique(pbp$GAMECODE))
+```
+
+Nótese que lleva un tiempo considerable obtener el data frame final. No es por el tamaño de los datos, ni por falta de optimización del código. La función está diseñada para ser lenta. En la documentación de la API de la Euroliga se indica que dejemos unos segundos entre petición y petición para no saturar el servidor.
+
+### Análisis de asistencias
+
+Para averiguar las diferentes preguntas que mencionamos en la introducción echamos mano de la función `get_assists()`. Introduciendo los datos jugada-a-jugada en esta función obtenemos un data frame con el que luego podremos averiguar muchos detalles interesantes con unas pocas líneas de código. Para ello utilizaremos principalmente el paquete `dplyr`.
+
+```{r, message = FALSE}
+library(dplyr)
+assists <- get_assists(pbp, team = "MAD")
+head(assists)
+# Número de asistencias de cada jugador del Madrid
+assists %>% 
+    group_by(passer) %>% 
+    count() %>% 
+    arrange(desc(n))
+```
+
+#### ¿Quién pasa a quién?
+
+Con el data frame `assists` podemos hayar a quién han ido dirigidas las asistencias de cada jugador del Madrid:
+
+```{r}
+assists %>% 
+    group_by(passer, shooter) %>% 
+    count() %>% 
+    arrange(desc(n)) %>% 
+    head()
+```
+
+Esto nos permite averigu
+
+#### ¿Qué tipo de tiro genera cada jugador cuando da una asistencia?
+
+También podemos averiguar el tipo de acción con la que culmina la asistencia. Una asistencia puede terminar con un tiro de tres, un tiro de dos, una falta personal de tiro (o una tiro de campo más un tiro libre adicional).
+
+La frecuencia de cada tipo de asistencia en el Madrid la obtenemos de la siguiente manera:
+
+```{r}
+assists %>% 
+    group_by(passer, play_type) %>% 
+    count()
+```
+
+```{r}
+# Need to deal with and1's
+
+assists %>% 
+    filter(play_type == "RV")
+
+pbp %>% 
+    filter(team_name == "Real Madrid") %>% 
+    .[1006:1012,]
+
+pbp %>% 
+    filter(game_code == 28) %>% 
+    .[match(521:530, .$play_number),]
+```
+
+
+#### ¿Cuántos puntos generan las asistencias de cada jugador?
+
+Como hemos visto, no todas las asistencias son iguales. Una asistencia a un tiro de 3 genera dos puntos más que una asistencia que resulta en una falta de tiro en la que el tirador sólo mete un tiro libre.
+
+Con nuestro data frame `assists` podemos averiguar cuántos puntos ha generado cada jugador del Real Madrid con sus asistencias:
+
+```{r}
+
+```
+

@@ -1,6 +1,7 @@
 #' Extract play-by-play data for a given team
 #'
-#' Extracts play-by-play data for all games that a given team has played in the specified season
+#' Downloads play-by-play data of all games that a given team has played
+#' in the specified season
 #'
 #' @param team
 #' @param season

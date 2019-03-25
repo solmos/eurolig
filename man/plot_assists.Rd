@@ -4,7 +4,7 @@
 \alias{plot_assists}
 \title{Plot assists network}
 \usage{
-plot_assists(pbp_df, team)
+plot_assists(pbp_df, team_code)
 }
 \arguments{
 \item{pbp_df}{Data frame with play-by-play data}

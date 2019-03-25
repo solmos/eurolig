@@ -2,18 +2,25 @@
 % Please edit documentation in R/extract_pbp.R
 \name{extract_pbp}
 \alias{extract_pbp}
-\title{Extract play-by-play data for Euroleague games}
+\title{Extract play-by-play data}
 \usage{
 extract_pbp(game_code, season)
 }
 \arguments{
 \item{game_code}{An integer as specified in the game url}
 
-\item{season}{The starting year of the desired season}
+\item{season}{An integer specifying the starting year of the desired season}
 }
 \value{
-A data frame
+A data frame containing the following variables:
+  \itemize {
+    \item \code{game_code}: Game code
+    \item \code{play_number}: Number sequence specifying the order of
+      each action
+    \item \code{team_code}: Team code
+  }
 }
 \description{
-Extract play-by-play data for Euroleague games
+\code{extract_pbp} downloads play-by-play data from Euroleague and returns
+a tidy data frame.
 }
