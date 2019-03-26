@@ -19,7 +19,7 @@ knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
 
 3. Quién asiste a quién
 
-4. Cómo visualizar las asistencias de un partido
+4. Cómo visualizar las asistencias del equipo
 
 ## eurolig
 
@@ -61,13 +61,13 @@ En el presente análisis queremos analizar más de un partido. En concreto, quer
 
 Procedemos pues a descargar los datos de todos los partidos que ha disputado el actual FC Barcelona hasta la fecha (25 de Marzo del 2019):
 
-```{r}
-# Load data to save time while writing. Delete later
-# load("~/2018-mad-pbp.RData")
+```{r, eval = FALSE}
 pbp <- extract_team_pbp(team = "BAR", season = 2018)
+```
 
-# Comprobar el número de partidos obtenidos
-length(unique(pbp$game_code))
+```{r, echo = FALSE}
+# Load the data to save time rendering document
+load("~/Desktop/pbp.RData")
 ```
 
 Nótese que lleva un tiempo considerable obtener el data frame final. No es por el tamaño de los datos, ni por falta de optimización del código. La función está diseñada para ser lenta. En la documentación de la API de la Euroliga se indica que dejemos unos segundos entre petición y petición para no saturar el servidor.
@@ -87,7 +87,7 @@ head(assists)
 
 Con el data frame `assists` podemos averiguar el tipo de acción con la que culmina la asistencia. Una asistencia puede terminar con un tiro de tres, un tiro de dos, una falta personal de tiro o un tiro de campo más un tiro libre adicional.
 
-La frecuencia de cada tipo de asistencia en el FC Barcelona la obtenemos de la siguiente manera:
+En este caso, pongamos que estamos interesados solamente en saber si se trata de un tiro de dos o un tiro de tres. Los jugadores del FC Barcelona con más de 10 asistencias en total distribuyen sus asistencias de la siguiente manera:
 
 ```{r}
 assists %>% 
@@ -102,7 +102,9 @@ assists %>%
     filter(assists > 10)
 ```
 
+En este caso Heurtel tiene el segundo menor ratio de asistencias a tiros de tres con respecto al total de asistencias dadas (0.268). Pangos, por otro lado, tiene una proporción bastante mayor de asistencias que van a la línea de tres (0.391).
 
+Los jugadores grandes y móviles del FC Barcelona, como Claver, Singleton u Oriola, dan una mayor proporción de sus asistencias a tiros de tres.
 
 #### ¿Cuántos puntos generan las asistencias de cada jugador?
 
@@ -116,21 +118,34 @@ assists %>%
     summarise(
         assists = n(),
         points = sum(points, na.rm = TRUE),
-        ppa = points / assists
+        ppa = round(points / assists, 3)
     ) %>% 
-    arrange(desc(assists))
+    arrange(desc(assists)) %>% 
+    filter(assists > 10)
 ```
 
 La última columna de esta tabla (`ppa`) nos da los puntos por asistencia que genera cada jugador (con más de 10 asistencias).
 
 #### ¿Quién pasa a quién?
 
-Con el data frame `assists` podemos hayar a quién han ido dirigidas las asistencias de cada jugador del FC Barcelona:
+También es posible hayar a quién han ido dirigidas las asistencias de cada jugador del FC Barcelona:
 
 ```{r}
 assists %>% 
     group_by(passer, shooter) %>% 
     count() %>% 
     arrange(desc(n)) %>% 
-    head()
+    filter(n > 10)
 ```
+
+Observamos que Heurtel se entiende muy bien con los interiores de su equipo, especialmente los dos cincos, Seraphin y Tomic. Esto explica la baja proporción de asistencias a tiros de tres que obervamos anteriormente.
+
+Algo que debemos tener en cuenta, sin embargo, es la cantidad de minutos que estas parejas de jugadores están juntas en la cancha. Este dato permitiría tener una medida ajustada y nos permitiría identificar posibles mejoras en los quintetos que tiene en pista el equipo.
+
+
+#### Cómo visualizar las asistencias del equipo
+
+```{r}
+plot_assists(pbp, "BAR")
+```
+
