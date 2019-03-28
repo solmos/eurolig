@@ -27,29 +27,41 @@ devtools::install_github("solmos/eurolig")
 Example
 -------
 
-This is a basic example which shows you how to solve a common problem:
+Let's say we want to analyze play-by-play data from the Championship game of the 2017-2018 season between Real Madrid and Fenerbache Dogus Istanbul. We can obtain the data by entering the game code and the season to the function `extract_pbp()`. The game code for the game can be found in the game's [URL](https://www.euroleague.net/main/results/showgame?gamecode=260&seasoncode=E2017).
 
 ``` r
-## basic example code
+library(eurolig)
+pbp <- extract_pbp(game_code = 260, season = 2017)
+head(pbp)
+#> # A tibble: 6 x 18
+#>   game_code play_number team_code player_name play_type time_remaining
+#>   <fct>           <int> <fct>     <fct>       <fct>     <chr>         
+#> 1 260                 2 <NA>      <NA>        BP        10:00         
+#> 2 260                 3 MAD       AYON, GUST… TPOFF     09:59         
+#> 3 260                 4 ULK       GUDURIC, M… TPOFF     09:44         
+#> 4 260                 5 ULK       DUVERIOGLU… 2FGM      09:41         
+#> 5 260                 6 ULK       GUDURIC, M… AS        09:41         
+#> 6 260                 7 ULK       VESELY, JAN CM        09:29         
+#> # … with 12 more variables: quarter <fct>, points_home <dbl>,
+#> #   points_away <dbl>, team_name <fct>, player_id <fct>,
+#> #   player_dorsal <dbl>, play_info <chr>, seconds <dbl>, home_team <fct>,
+#> #   away_team <fct>, home <lgl>, season <int>
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
+From these data we can extract information about the assists in that game from, say, Real Madrid (MAD):
 
 ``` r
-summary(cars)
-#>      speed           dist       
-#>  Min.   : 4.0   Min.   :  2.00  
-#>  1st Qu.:12.0   1st Qu.: 26.00  
-#>  Median :15.0   Median : 36.00  
-#>  Mean   :15.4   Mean   : 42.98  
-#>  3rd Qu.:19.0   3rd Qu.: 56.00  
-#>  Max.   :25.0   Max.   :120.00
+assists <- get_assists(pbp, team = "MAD")
+head(assists)
+#> # A tibble: 6 x 12
+#>   game_code season passer shooter shot_type points time_remaining quarter
+#>   <fct>     <fct>  <fct>  <fct>   <fct>      <dbl> <chr>          <fct>  
+#> 1 260       2017   FERNA… LLULL,… 3FG            3 01:15          1      
+#> 2 260       2017   LLULL… RANDOL… 3FG            3 00:05          1      
+#> 3 260       2017   FERNA… TAYLOR… 2FG            2 09:00          2      
+#> 4 260       2017   LLULL… TAVARE… 2FG            2 08:32          2      
+#> 5 260       2017   DONCI… CARROL… 2FG            2 04:25          2      
+#> 6 260       2017   TAYLO… THOMPK… 2FG            2 03:35          2      
+#> # … with 4 more variables: seconds <int>, foul <lgl>, and1 <dbl>,
+#> #   ftm <dbl>
 ```
-
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date.
-
-You can also embed plots, for example:
-
-<img src="man/figures/README-pressure-1.png" width="100%" />
-
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub!
