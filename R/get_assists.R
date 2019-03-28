@@ -1,6 +1,7 @@
 #' Get who assisted who from play-by-play data
 #'
 #' @param df Play-by-play data frame as produced by extract_pbp()
+#' @param team A three letter string specifying the team code
 #'
 #' @return A data frame
 #' @export
@@ -10,10 +11,10 @@ get_assists <- function(df, team) {
     ignored_plays <- c("IN", "OUT", "TOUT", "TOUT_TV")
 
     df <- df %>%
-        dplyr::filter(!(play_type %in% ignored_plays))
+        dplyr::filter(!(.data$play_type %in% ignored_plays))
     if (!missing(team)) {
         df <- df %>%
-            dplyr::filter(team_code == team)
+            dplyr::filter(.data$team_code == team)
     }
     # Assisted FGM are recorded in the row above the assist row
     assists_idx <- which(df$play_type == "AS")
@@ -37,8 +38,9 @@ get_assists <- function(df, team) {
     # We get a df with the rows above and below the assisted FT
     ft_plays <- c("FTM", "RV", "CM")
     ft_key <- assists_df %>%
-        dplyr::filter(play_type %in% ft_plays) %>%
-        dplyr::select(play_type, seconds, game_code, season)
+        dplyr::filter(.data$play_type %in% ft_plays) %>%
+        dplyr::select(.data$play_type, .data$seconds,
+                      .data$game_code, .data$season)
 
     game_split <- split(df, list(df$game_code, df$season))
 
@@ -50,14 +52,14 @@ get_assists <- function(df, team) {
     ft_list <- Map(function(pbp, a) pbp[pbp$seconds %in% a$seconds,],
                    pbp = assisted_ft_games, a = ft_key_list)
     ft_df <- do.call("rbind", ft_list) %>%
-        dplyr::mutate(seconds = factor(seconds)) %>%
-        dplyr::group_by(season, game_code, seconds) %>%
-        dplyr::summarise(fta = sum(play_type == "FTM" |
-                                       play_type == "FTA"),
-                         ftm = sum(play_type == "FTM"),
-                         and1 = fta == 1,
-                         fg2 = sum(play_type == "2FGM"),
-                         fg3 = sum(play_type == "3FGM"),
+        dplyr::mutate(seconds = factor(.data$seconds)) %>%
+        dplyr::group_by(.data$season, .data$game_code, .data$seconds) %>%
+        dplyr::summarise(fta = sum(.data$play_type == "FTM" |
+                                       .data$play_type == "FTA"),
+                         ftm = sum(.data$play_type == "FTM"),
+                         and1 = .data$fta == 1,
+                         fg2 = sum(.data$play_type == "2FGM"),
+                         fg3 = sum(.data$play_type == "3FGM"),
                          foul = 1) %>%
         dplyr::mutate(shot_type = dplyr::case_when(
             fg2 == 1 ~ "2FG",
@@ -68,8 +70,8 @@ get_assists <- function(df, team) {
         )
     assists_df$seconds <- as.character(assists_df$seconds)
     ft_df$seconds <- as.character(ft_df$seconds)
-    assists_df <- left_join(assists_df, ft_df,
-                            by = c("season", "game_code", "seconds"))
+    assists_df <- dplyr::left_join(assists_df, ft_df,
+                                   by = c("season", "game_code", "seconds"))
 
     # NOTE: Any non 2FG or 3FG will be recorded as NA
     assists_df$shot_type[assists_df$play_type == "2FGM"] <- "2FG"
@@ -81,32 +83,34 @@ get_assists <- function(df, team) {
 
     assists_df <- assists_df %>%
         dplyr::mutate(points = dplyr::case_when(
-            foul == 1 & and1 == 0 ~ ftm,
-            and1 == 1 & shot_type == "2FG" ~ 2 + ftm,
-            and1 == 1 & shot_type == "3FG" ~ 3 + ftm,
-            play_type == "2FGM" ~ 2,
-            play_type == "3FGM" ~ 3
+            .data$foul == 1 & .data$and1 == 0 ~ ftm,
+            .data$and1 == 1 & .data$shot_type == "2FG" ~ 2 + ftm,
+            .data$and1 == 1 & .data$shot_type == "3FG" ~ 3 + ftm,
+            .data$play_type == "2FGM" ~ 2,
+            .data$play_type == "3FGM" ~ 3
         ))
 
     assists <- assists_df %>%
         dplyr::mutate(
-            seconds = as.integer(seconds),
-            season = factor(season),
-            foul = as.logical(foul),
-            shot_type = factor(shot_type)
+            seconds = as.integer(.data$seconds),
+            season = factor(.data$season),
+            foul = as.logical(.data$foul),
+            shot_type = factor(.data$shot_type),
+            passer = droplevels(.data$passer),
+            shooter = droplevels(.data$shooter)
             ) %>%
-        dplyr::select(game_code,
-                      season,
-                      passer,
-                      shooter,
-                      shot_type,
-                      points,
-                      time_remaining,
-                      quarter,
-                      seconds,
-                      foul,
-                      and1,
-                      ftm)
+        dplyr::select(.data$game_code,
+                      .data$season,
+                      .data$passer,
+                      .data$shooter,
+                      .data$shot_type,
+                      .data$points,
+                      .data$time_remaining,
+                      .data$quarter,
+                      .data$seconds,
+                      .data$foul,
+                      .data$and1,
+                      .data$ftm)
 
     tibble::as_tibble(assists)
 }

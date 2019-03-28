@@ -4,13 +4,9 @@
 #' a tidy data frame.
 #'
 #'
-#'
-#' @param game_code An integer as specified in the game url
+#' @param game_code An integer specifying the game code
 #' @param season An integer specifying the starting year of the desired season
 #'
-#' @importFrom magrittr %>%
-#'
-#' @importFrom rlang .data
 #'
 #' @return A tibble
 #'
@@ -117,7 +113,7 @@ extract_pbp <- function(game_code, season) {
             game_code = factor(.data$GAMECODE),
             play_number = .data$NUMBEROFPLAY,
             team_code = factor(trimws(.data$CODETEAM), exclude = ""),
-            player_name = .data$PLAYER,
+            player_name = factor(.data$PLAYER),
             play_type = factor(.data$PLAYTYPE),
             time_remaining = .data$MARKERTIME,
             quarter = factor(.data$QUARTER),
