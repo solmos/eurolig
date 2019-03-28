@@ -75,4 +75,4 @@ plot_heatmap(mad2017, team = "MAD") +
                   subtitle = "Euroleague 2017-2018")
 ```
 
-<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
+![](man/figures/README-unnamed-chunk-4-1.png)
