@@ -65,3 +65,14 @@ head(assists)
 #> # … with 4 more variables: seconds <int>, foul <lgl>, and1 <dbl>,
 #> #   ftm <dbl>
 ```
+
+Moreover, eurolig provides some functions to visualize the data. We can use `plot_heatmap()` to show the distribution of assists among a given team. The package includes an example play-by-play data set of Real Madrid's entire 2017-2018 Euroleague season. We use these data to show Real Madrid's assists pattern on that season:
+
+``` r
+data(mad2017)
+plot_heatmap(mad2017, team = "MAD") +
+    ggplot2::labs(title = "Real Madrid assist heatmap",
+                  subtitle = "Euroleague 2017-2018")
+```
+
+<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
