@@ -61,5 +61,7 @@ plot_heatmap <- function(pbp, team) {
             panel.border = element_blank(),
             axis.line = element_blank(),
             axis.ticks = element_blank()
-        )
+        ) +
+        ggplot2::labs(x = "Shooter",
+                      y = "Passer")
 }
