@@ -26,6 +26,7 @@ Imports:
     tibble,
     xml2,
     rlang,
-    crayon
+    crayon,
+    tidyr
 Suggests: 
     testthat

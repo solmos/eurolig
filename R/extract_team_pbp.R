@@ -3,10 +3,10 @@
 #' Downloads play-by-play data of all games that a given team has played
 #' in the specified season
 #'
-#' @param team
-#' @param season
+#' @param team A three letter string specifying the team code
+#' @param season An integer specifying the starting year of the desired season
 #'
-#' @return
+#' @return A tibble
 #' @export
 #'
 #' @examples

@@ -7,8 +7,14 @@
 extract_team_pbp(team, season)
 }
 \arguments{
-\item{season}{}
+\item{team}{A three letter string specifying the team code}
+
+\item{season}{An integer specifying the starting year of the desired season}
+}
+\value{
+A tibble
 }
 \description{
-Extracts play-by-play data for all games that a given team has played in the specified season
+Downloads play-by-play data of all games that a given team has played
+in the specified season
 }

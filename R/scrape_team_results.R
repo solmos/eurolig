@@ -2,10 +2,10 @@
 #'
 #' Get results of the games of a given team and season
 #'
-#' @param team
-#' @param season
+#' @param team A three letter string specifying the team code
+#' @param season An integer specifying the starting year of the desired season
 #'
-#' @return
+#' @return A tibble
 #' @export
 #'
 #' @examples

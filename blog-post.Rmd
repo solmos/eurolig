@@ -80,6 +80,7 @@ Para averiguar las diferentes preguntas que mencionamos en la introducción echa
 library(dplyr)
 assists <- get_assists(pbp, team = "BAR")
 head(assists)
+str(assists)
 ```
 
 
@@ -110,7 +111,7 @@ Los jugadores grandes y móviles del FC Barcelona, como Claver, Singleton u Orio
 
 Como hemos visto, no todas las asistencias son iguales. Una asistencia a un tiro de 3 genera dos puntos más que una asistencia que resulta en una falta de tiro en la que el tirador sólo mete un tiro libre.
 
-Con las siguientes lineas de codigo podemos calcular cuántos puntos ha generado cada jugador del FC Barcelona con sus asistencias:
+Con las siguientes lineas de código podemos calcular cuántos puntos ha generado cada jugador del FC Barcelona con sus asistencias:
 
 ```{r}
 assists %>% 
@@ -134,18 +135,24 @@ También es posible hayar a quién han ido dirigidas las asistencias de cada jug
 assists %>% 
     group_by(passer, shooter) %>% 
     count() %>% 
-    arrange(desc(n)) %>% 
-    filter(n > 10)
+    arrange(desc(n))
 ```
 
 Observamos que Heurtel se entiende muy bien con los interiores de su equipo, especialmente los dos cincos, Seraphin y Tomic. Esto explica la baja proporción de asistencias a tiros de tres que obervamos anteriormente.
 
-Algo que debemos tener en cuenta, sin embargo, es la cantidad de minutos que estas parejas de jugadores están juntas en la cancha. Este dato permitiría tener una medida ajustada y nos permitiría identificar posibles mejoras en los quintetos que tiene en pista el equipo.
+Algo que debemos tener en cuenta, sin embargo, es la cantidad de minutos que estas parejas de jugadores están juntas en la cancha. Este dato permitiría tener una medida ajustada y nos permitiría identificar posibles mejoras en los quintetos que tiene en pista el equipo.^[1]
 
 
 #### Cómo visualizar las asistencias del equipo
 
+
 ```{r}
-plot_assists(pbp, "BAR")
+plot_heatmap(bar_pbp, "BAR") +
+    labs(title = "FC Barcelona assist heatmap",
+         subtitle = "Euroleague 2018-2019 (first 28 games)",
+         x = "Shooter",
+         y = "Passer",
+         caption = "Source: Play-by-play data from euroleague.net")
 ```
+
 

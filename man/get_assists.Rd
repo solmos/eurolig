@@ -8,6 +8,8 @@ get_assists(df, team)
 }
 \arguments{
 \item{df}{Play-by-play data frame as produced by extract_pbp()}
+
+\item{team}{A three letter string specifying the team code}
 }
 \value{
 A data frame

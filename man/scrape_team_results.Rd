@@ -7,7 +7,12 @@
 scrape_team_results(team, season)
 }
 \arguments{
-\item{season}{}
+\item{team}{A three letter string specifying the team code}
+
+\item{season}{An integer specifying the starting year of the desired season}
+}
+\value{
+A tibble
 }
 \description{
 Get results of the games of a given team and season

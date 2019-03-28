@@ -7,18 +7,12 @@
 extract_pbp(game_code, season)
 }
 \arguments{
-\item{game_code}{An integer as specified in the game url}
+\item{game_code}{An integer specifying the game code}
 
 \item{season}{An integer specifying the starting year of the desired season}
 }
 \value{
-A data frame containing the following variables:
-  \itemize {
-    \item \code{game_code}: Game code
-    \item \code{play_number}: Number sequence specifying the order of
-      each action
-    \item \code{team_code}: Team code
-  }
+A tibble
 }
 \description{
 \code{extract_pbp} downloads play-by-play data from Euroleague and returns
