@@ -72,7 +72,7 @@ Moreover, eurolig provides some functions to visualize the data. We can use `plo
 data(mad2017)
 plot_heatmap(mad2017, team = "MAD") +
     ggplot2::labs(title = "Real Madrid assist heatmap",
-                  subtitle = "Euroleague 2017-2018")
+                  subtitle = "Euroleague 2017/2018")
 ```
 
 ![](man/figures/README-unnamed-chunk-4-1.png)
