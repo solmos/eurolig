@@ -3,21 +3,31 @@
 #' Uses igpraph to plot a network graph showing who assisted who from play-by-play data.
 #'
 #' @param pbp_df Data frame with play-by-play data
-#' @param team
+#' @param team A three letter string specifying the team code
 #'
-#' @return
+#' @return An igraph network plot
 #' @export
 #'
 #' @examples
-plot_assists <- function(pbp_df, team_code) {
-    assist_df <- get_assists(pbp_df, team_code)
-    edges <- assist_df %>%
-        dplyr::group_by(passer, shooter) %>%
+plot_network <- function(pbp_df, team, n_min) {
+    assist_df <- get_assists(pbp_df, team)
+    n_assists <- assist_df %>%
+        dplyr::group_by(.data$passer) %>%
         dplyr::count()
 
+    edges <- assist_df %>%
+        dplyr::group_by(.data$passer, .data$shooter) %>%
+        dplyr::count() %>%
+        dplyr::arrange(dplyr::desc(.data$n))
+
+    if (!missing(n_min)) {
+        edges <- dplyr::filter(edges, .data$n >= n_min)
+    }
+
     nodes <- assist_df %>%
-        dplyr::group_by(passer) %>%
-        dplyr::summarise(pts_generated = sum(points))
+        dplyr::group_by(.data$passer) %>%
+        dplyr::summarise(pts_generated = sum(.data$points, na.rm = TRUE)) %>%
+        dplyr::filter(.data$passer %in% unique(edges$passer))
 
     # We need to add the players with no assists to nodes
     all_node_ids <- unique(c(as.character(edges$passer),
@@ -34,9 +44,9 @@ plot_assists <- function(pbp_df, team_code) {
                                  stringsAsFactors = FALSE)
 
     nodes <- nodes %>%
-        dplyr::transmute(id = as.character(passer),
-                         value = pts_generated,
-                         tittle = passer) %>%
+        dplyr::transmute(id = as.character(.data$passer),
+                         value = .data$pts_generated,
+                         tittle = .data$passer) %>%
         dplyr::left_join(node_labels_df, by = "id")
 
     # Igraph
@@ -44,7 +54,7 @@ plot_assists <- function(pbp_df, team_code) {
                                          vertices = nodes,
                                          directed = TRUE)
 
-    igraph::V(net)$size <- scale(nodes$value) + 20
+    igraph::V(net)$size <- nodes$value
     igraph::V(net)$color <- "slategray2"
     igraph::V(net)$frame.color <- "white"
     igraph::V(net)$label.color <- "black"
