@@ -27,6 +27,7 @@ Imports:
     xml2,
     rlang,
     crayon,
-    tidyr
+    tidyr,
+    purrr
 Suggests: 
     testthat
