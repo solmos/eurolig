@@ -31,12 +31,6 @@ extract_pbp <- function(game_code, season) {
                              stringr::str_extract,
                              pattern = "[A-z]+")
 
-    # We need a special way to deal with double or more over times
-    # EP_idx <- lapply(pbp_raw_list,
-    #                  function(x) which(x$PLAYTYPE == "EP"))
-    # extra_over_times <- sapply(EP_idx, function(x) length(x) > 5)
-
-
     recode_quarters <- function(x) {
         v <- dplyr::recode(x,
                            FirstQuarter = 1,
@@ -112,14 +106,14 @@ extract_pbp <- function(game_code, season) {
         dplyr::transmute(
             game_code = factor(.data$GAMECODE),
             play_number = .data$NUMBEROFPLAY,
-            team_code = factor(trimws(.data$CODETEAM), exclude = ""),
-            player_name = factor(.data$PLAYER),
+            team_code = as.character(trimws(.data$CODETEAM)),
+            player_name = as.character(.data$PLAYER),
             play_type = factor(.data$PLAYTYPE),
             time_remaining = .data$MARKERTIME,
             quarter = factor(.data$QUARTER),
             points_home = .data$POINTS_HOME,
             points_away = .data$POINTS_AWAY,
-            team_name = factor(.data$TEAM, exclude = NA),
+            team_name = as.character(.data$TEAM),
             player_id = factor(trimws(.data$PLAYER_ID), exclude = ""),
             player_dorsal = as.numeric(.data$DORSAL),
             play_info = .data$PLAYINFO,
