@@ -4,11 +4,11 @@
 #' a tidy data frame.
 #'
 #'
-#' @param game_code An integer specifying the game code
-#' @param season An integer specifying the starting year of the desired season
+#' @param game_code An integer scalar specifying the game code
+#' @param season An integer scalar specifying the starting year of the desired season
 #'
 #'
-#' @return A tibble
+#' @return A tibble of play-by-play data
 #'
 #'
 #' @export
@@ -104,6 +104,7 @@ extract_pbp <- function(game_code, season) {
 
     pbp <- pbp_df %>%
         dplyr::transmute(
+            season = as.integer(.data$SEASONCODE),
             game_code = factor(.data$GAMECODE),
             play_number = .data$NUMBEROFPLAY,
             team_code = as.character(trimws(.data$CODETEAM)),
@@ -120,8 +121,20 @@ extract_pbp <- function(game_code, season) {
             seconds = seconds_elapsed,
             home_team = .data$HOME_TEAM,
             away_team = .data$AWAY_TEAM,
-            home = as.character(.data$HOME_TEAM) == as.character(.data$TEAM),
-            season = as.integer(.data$SEASONCODE)
-            )
-    tibble::as_tibble(pbp)
+            home = as.character(.data$HOME_TEAM) == as.character(.data$TEAM)
+            ) %>%
+        tibble::as_tibble()
+
+    # Add column identifying the last free throw in a trip to the line
+    pbp$last_ft <- FALSE
+    last_fts <- whichLastFt(pbp)
+    pbp$last_ft[last_fts] <- TRUE
+
+    # Add column indicating when a possesion ends??
+    # pbp$possession_end <- getPossEnding(pbp)
+
+    # Add columns indicating players on the floor
+    pbp <- get_lineups(pbp)
+
+    pbp
 }
