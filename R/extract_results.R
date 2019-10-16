@@ -6,23 +6,23 @@
 #' @export
 #'
 #' @examples
-extract_results <- function(season) {
+extractResults <- function(season) {
     base_url <- "https://www.euroleague.net/main/results?seasoncode=E"
     year_url <- paste0(base_url, season)
-    phase_urls <- extract_phase_urls(year_url)
+    phase_urls <- extractPhaseUrls(year_url)
 
-    round_urls <- lapply(as.list(phase_urls), extract_round_urls) %>%
+    round_urls <- lapply(as.list(phase_urls), extractRoundUrls) %>%
         unlist()
     results <- vector("list", length(round_urls))
     for (i in seq_along(results)) {
-        results[[i]] <- extract_games(round_urls[i])
+        results[[i]] <- try(extractGames(round_urls[i]), silent = TRUE)
     }
     results_df <- do.call(rbind, results)
 
     results_df
 }
 
-extract_year_urls <- function() {
+extractYearUrls <- function() {
     main_url <- "https://www.euroleague.net/main/results"
     main_html <- xml2::read_html(main_url)
     select_nodes <- main_html %>%
@@ -37,7 +37,7 @@ extract_year_urls <- function() {
     paste0(base_url, year_urls)
 }
 
-extract_phase_urls <- function(year_url) {
+extractPhaseUrls <- function(year_url) {
     page_html <- xml2::read_html(year_url)
 
     select_nodes <- page_html %>%
@@ -52,8 +52,8 @@ extract_phase_urls <- function(year_url) {
     paste0(main_url, phases_urls)
 }
 
-extract_round_urls <- function(phase_url) {
-    phase_html <- read_html(phase_url)
+extractRoundUrls <- function(phase_url) {
+    phase_html <- xml2::read_html(phase_url)
 
     select_nodes <- phase_html %>%
         html_nodes("div.game-center-selector") %>%
@@ -69,7 +69,7 @@ extract_round_urls <- function(phase_url) {
 }
 
 
-extract_games <- function(round_url) {
+extractGames <- function(round_url) {
     round_html <- xml2::read_html(round_url)
 
     # First we want to find the information for these games
@@ -83,18 +83,22 @@ extract_games <- function(round_url) {
         html_nodes("option") %>%
         html_attr("value")
 
-    relative_url <- str_remove(round_url, "https://www.euroleague.net")
+    relative_url <- stringr::str_remove(round_url, "https://www.euroleague.net")
     round_idx <- which(round_urls == relative_url)
     round_name <- select_nodes[[3]] %>%
         html_nodes("option") %>%
         html_text() %>%
         .[round_idx]
 
-    round_info <- get_round_info(round_url)
+    round_info <- getRoundInfo(round_url)
 
     # The following nodes correspond to the game boxes in the website
     game_nodes <- round_html %>%
+        html_node("div#main-one") %>%
         html_nodes("div.game.played")
+
+    # Stop if there are no games played (i.e. games have not been played yet)
+    stopifnot(length(game_nodes) > 0)
 
     main_url <- "https://www.euroleague.net"
     game_urls <- game_nodes %>%
@@ -103,8 +107,8 @@ extract_games <- function(round_url) {
         paste0(main_url, .)
 
     game_codes <- game_urls %>%
-        str_extract("gamecode=\\d+") %>%
-        str_remove("gamecode=")
+        stringr::str_extract("gamecode=\\d+") %>%
+        stringr::str_remove("gamecode=")
 
     team_names <- game_nodes %>%
         html_nodes("div.club") %>%
@@ -116,8 +120,8 @@ extract_games <- function(round_url) {
 
     points <- game_nodes %>%
         html_nodes("div.club") %>%
-        html_text() %>%
-        str_extract("\\d+")
+        html_nodes("span") %>%
+        stringr::str_extract("\\d+")
     points_home <- points[home_idx]
     points_away <- points[-home_idx]
 
@@ -143,9 +147,9 @@ extract_games <- function(round_url) {
 
 # Get the round number, phase and season from a round_url,
 # such as "https://www.euroleague.net/main/results?gamenumber=31&phasetypecode=PO&seasoncode=E2017"
-get_round_info <- function(round_url) {
-    round_info_raw <- str_extract_all(round_url, "=[:alnum:]+")[[1]] %>%
-        str_remove("=E*")
+getRoundInfo <- function(round_url) {
+    round_info_raw <- stringr::str_extract_all(round_url, "=[:alnum:]+")[[1]] %>%
+        stringr::str_remove("=E*")
     round_number <- round_info_raw[1]
     phase <- round_info_raw[2]
     season <- round_info_raw[3]

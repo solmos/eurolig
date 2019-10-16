@@ -1,4 +1,3 @@
-
 #' Get lineups at all events of a play-by-play data frame
 #'
 #' @param pbp Data frame as obtained by extract_pbp()

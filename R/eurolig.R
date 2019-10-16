@@ -6,6 +6,7 @@
 #' @importFrom ggplot2 element_blank element_rect element_text
 #' @importFrom ggplot2 geom_tile guide_colorbar scale_fill_gradient
 #' @importFrom graphics plot
+#' @importFrom rvest html_nodes html_node html_attr html_text
 #'
 #' @docType package
 #' @name eurolig

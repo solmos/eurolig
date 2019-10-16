@@ -130,11 +130,19 @@ extract_pbp <- function(game_code, season) {
     last_fts <- whichLastFt(pbp)
     pbp$last_ft[last_fts] <- TRUE
 
+    # Add column identifying if a free throw is from an "and 1"
+    pbp$and1 <- FALSE
+    and1_idx <- whichAnd1(pbp)
+    pbp$and1[and1_idx] <- TRUE
+
     # Add column indicating when a possesion ends??
     # pbp$possession_end <- getPossEnding(pbp)
 
     # Add columns indicating players on the floor
     pbp <- get_lineups(pbp)
+
+    # Do not change lineups during FT stint
+    pbp <- fixLineups(pbp)
 
     pbp
 }
