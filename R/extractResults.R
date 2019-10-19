@@ -17,6 +17,16 @@ extractResults <- function(season) {
     for (i in seq_along(results)) {
         results[[i]] <- try(extractGames(round_urls[i]), silent = TRUE)
     }
+
+    # Detect games that were not retrieved
+    results_correct <- vapply(results,
+                              function(x) typeof(x) == "list",
+                              logical(1))
+
+    stopifnot(sum(results_correct) >= 1)
+
+    results <- results[results_correct]
+
     results_df <- do.call(rbind, results)
 
     results_df
@@ -118,10 +128,28 @@ extractGames <- function(round_url) {
     home_teams <- team_names[home_idx]
     away_teams <- team_names[-home_idx]
 
+
+    # The tag where scores are located change depending on who wins
+    # We select all tags in the games boxes
+    # Each team has two span tags, the second of which is the score
+    n_tags <- length(team_names) * 2
+    score_tag_idx <- seq(2, n_tags, by = 2)
     points <- game_nodes %>%
         html_nodes("div.club") %>%
         html_nodes("span") %>%
-        stringr::str_extract("\\d+")
+        .[score_tag_idx] %>%
+        html_text() %>%
+        as.integer()
+    # The html structure for Season 2019 is a bit different
+    # The score is stored in attr data-score instead of as text
+    if (sum(is.na(points)) == length(points)) {
+        points <- game_nodes %>%
+            html_nodes("div.club") %>%
+            html_nodes("span") %>%
+            .[score_tag_idx] %>%
+            html_attr("data-score") %>%
+            as.integer()
+    }
     points_home <- points[home_idx]
     points_away <- points[-home_idx]
 
