@@ -6,7 +6,7 @@
 #' @export
 #'
 #' @examples
-extract_teams <- function(season) {
+extractTeams <- function(season) {
     base_url <- "https://www.euroleague.net/competition/teams?seasoncode=E"
     year_url <- paste0(base_url, season)
 
@@ -27,8 +27,8 @@ extract_teams <- function(season) {
         paste0(main_url, .)
 
     team_codes <- team_links %>%
-        str_extract("clubcode=[A-Z]+") %>%
-        str_remove("clubcode=")
+        stringr::str_extract("clubcode=[A-Z]+") %>%
+        stringr::str_remove("clubcode=")
 
     team_imgs <- team_nodes %>%
         html_nodes("div.RoasterImage") %>%

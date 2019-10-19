@@ -46,25 +46,3 @@ whichAnd1 <- function(pbp) {
     last_ft_play_number <- vapply(ft_stints, whichAnd1InStint, numeric(1))
     which(pbp$play_number %in% last_ft_play_number)
 }
-
-# pbp %>%
-#     filter(play_number %in% find_last_ft(pbp))
-#
-# pbp$play_type[pbp$play_number %in% find_last_ft(pbp)]
-#
-#
-# pbp$last_ft <- FALSE
-# pbp$last_ft[pbp$play_number[find_last_ft(pbp)]] <- TRUE
-# pbp[pbp$play_number[find_last_ft(pbp)],]
-# x <- split(ft_events, ft_events$seconds)
-#
-# # bad recorded sequence
-# ft_stint <- x$`1673`
-#
-# idx <- which(y$play_type == "FTA" | y$play_type == "FTM")
-# last_ft_play_number <- y$play_number[idx][length(idx)]
-# pbp$play_type[pbp$play_number == last_ft_play_number]
-#
-# y$last_ft <- FALSE
-# y$last_ft[y$play_number == last_ft_play_number] <- TRUE
-# sum(n_fts$n_fts)
