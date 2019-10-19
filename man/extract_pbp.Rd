@@ -7,12 +7,12 @@
 extract_pbp(game_code, season)
 }
 \arguments{
-\item{game_code}{An integer specifying the game code}
+\item{game_code}{An integer scalar specifying the game code}
 
-\item{season}{An integer specifying the starting year of the desired season}
+\item{season}{An integer scalar specifying the starting year of the desired season}
 }
 \value{
-A tibble
+A tibble of play-by-play data
 }
 \description{
 \code{extract_pbp} downloads play-by-play data from Euroleague and returns

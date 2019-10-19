@@ -2,3 +2,4 @@
 ^LICENSE\.md$
 ^eurolig\.Rproj$
 ^\.Rproj\.user$
+^data-raw$

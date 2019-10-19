@@ -12,8 +12,8 @@ getStintStats(pbp, players)
 \item{players}{Character vector with the players on the court}
 }
 \value{
-Data frame with stats on offense and defense
+Data frame with stats on offense and defense when players were on the court
 }
 \description{
-Get stats for a single stint
+\code{getStintStats} parses a play-by-play data frame and returns the statistics while the players were on the court
 }
