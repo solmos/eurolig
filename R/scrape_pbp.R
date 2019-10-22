@@ -7,6 +7,8 @@
 #' @export
 #'
 #' @examples
+
+## TODO: Unvectorize all the code so that only works for a single game
 scrape_pbp <- function(game_code, season) {
     base_api <- "https://live.euroleague.net/api/PlayByPlay"
     n_games <- length(game_code)

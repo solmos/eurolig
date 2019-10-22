@@ -4,7 +4,7 @@
 \alias{extract_pbp}
 \title{Extract play-by-play data}
 \usage{
-extract_pbp(game_code, season)
+extract_pbp(game_code, season, lineups = TRUE)
 }
 \arguments{
 \item{game_code}{An integer scalar specifying the game code}

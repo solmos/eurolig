@@ -14,7 +14,7 @@
 #' @export
 #'
 #' @examples
-extract_pbp <- function(game_code, season) {
+extract_pbp <- function(game_code, season, lineups = TRUE) {
     # Scrape data and update game and season codes in case bad requests occurr
     all_data <- scrape_pbp(game_code, season)
     game_code <- attr(all_data, "game_code")
@@ -139,7 +139,9 @@ extract_pbp <- function(game_code, season) {
     # pbp$possession_end <- getPossEnding(pbp)
 
     # Add columns indicating players on the floor
-    pbp <- get_lineups(pbp)
+    if (lineups == TRUE) {
+        pbp <- get_lineups(pbp)
+    }
 
     # Do not change lineups during FT stint
     pbp <- fixLineups(pbp)
