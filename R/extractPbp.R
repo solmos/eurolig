@@ -99,7 +99,7 @@ extractPbp <- function(game_code, season, lineups = TRUE) {
         tibble::as_tibble() %>%
         dplyr::transmute(
             season = as.integer(.data$season),
-            game_code = factor(.data$game_code),
+            game_code = .data$game_code,
             play_number = .data$NUMBEROFPLAY,
             team_code = trimws(.data$CODETEAM),
             player_name = as.character(.data$PLAYER),
@@ -120,25 +120,22 @@ extractPbp <- function(game_code, season, lineups = TRUE) {
     # Add column identifying the last free throw in a trip to the line
     pbp_final$last_ft <- FALSE
     last_fts <- isLastFt(pbp_final)
-    pbp$last_ft[last_fts] <- TRUE
+    pbp_final$last_ft[last_fts] <- TRUE
 
     # Add column identifying if a free throw is from an "and 1"
-    pbp$and1 <- FALSE
-    and1_idx <- whichAnd1(pbp)
-    pbp$and1[and1_idx] <- TRUE
+    pbp_final$and1 <- FALSE
+    and1_idx <- isAnd1(pbp_final)
+    pbp_final$and1[and1_idx] <- TRUE
 
     # Add column indicating when a possesion ends??
     # pbp$possession_end <- getPossEnding(pbp)
 
     # Add columns indicating players on the floor
     if (lineups == TRUE) {
-        pbp <- get_lineups(pbp)
+        pbp_final <- attachLineups(pbp_final)
     }
 
-    # Do not change lineups during FT stint
-    pbp <- fixLineups(pbp)
-
-    pbp
+    pbp_final
 }
 
 
