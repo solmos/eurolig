@@ -6,7 +6,7 @@
 #' @export
 #'
 #' @examples
-whichLastFt <- function(pbp) {
+isLastFt <- function(pbp) {
     # Find the time when fts are being shot
     ft_secs <- pbp$seconds[pbp$play_type == "FTA" | pbp$play_type == "FTM"]
     # Filter only the events during those times
@@ -14,7 +14,7 @@ whichLastFt <- function(pbp) {
 
     ft_stints <- split(ft_events, ft_events$seconds)
     last_ft_play_number <- vapply(ft_stints, whichLastFtInStint, numeric(1))
-    which(pbp$play_number %in% last_ft_play_number)
+    pbp$play_number %in% last_ft_play_number
 }
 
 #' Find last free throw of a single trip to the foul line
@@ -36,7 +36,7 @@ whichAnd1InStint <- function(ft_stint) {
     ifelse(length(ft_idx) == 1, ft_stint$play_number[ft_idx], NA)
 }
 
-whichAnd1 <- function(pbp) {
+isAnd1 <- function(pbp) {
     # Find the time when fts are being shot
     ft_secs <- pbp$seconds[pbp$play_type == "FTA" | pbp$play_type == "FTM"]
     # Filter only the events during those times
@@ -44,5 +44,5 @@ whichAnd1 <- function(pbp) {
 
     ft_stints <- split(ft_events, ft_events$seconds)
     last_ft_play_number <- vapply(ft_stints, whichAnd1InStint, numeric(1))
-    which(pbp$play_number %in% last_ft_play_number)
+    pbp$play_number %in% last_ft_play_number
 }
