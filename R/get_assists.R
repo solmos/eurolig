@@ -1,13 +1,13 @@
 #' Get who assisted who from play-by-play data
 #'
 #' @param df Play-by-play data frame as produced by extract_pbp()
-#' @param team A three letter string specifying the team code
+#' @param team An optional three letter string specifying the team code
 #'
 #' @return A data frame
 #' @export
 #'
 #' @examples
-get_assists <- function(df, team) {
+getAssists <- function(df, team) {
     ignored_plays <- c("IN", "OUT", "TOUT", "TOUT_TV")
 
     df <- df %>%
@@ -17,7 +17,7 @@ get_assists <- function(df, team) {
             dplyr::filter(.data$team_code == team)
     }
     # Assisted FGM are recorded in the row above the assist row
-    assists_idx <- which(df$play_type == "AS")
+    assists_idx <- which(df$play_type == "AST")
     fg_idx <- assists_idx - 1
     assists_df <- data.frame(
         passer = df$player_name[assists_idx],
@@ -36,23 +36,34 @@ get_assists <- function(df, team) {
 
     # We need to find out how many assisted free throws were made
     # We get a df with the rows above and below the assisted FT
-    ft_plays <- c("FTM", "RV", "CM")
-    ft_key <- assists_df %>%
+    ft_plays <- c("FTM", "RPF", "CPF")
+    assisted_fts <- assists_df %>%
         dplyr::filter(.data$play_type %in% ft_plays) %>%
         dplyr::select(.data$play_type, .data$seconds,
                       .data$game_code, .data$season)
 
-    game_split <- split(df, list(df$game_code, df$season))
+    pbp_by_game <- split(df, list(df$game_code, df$season))
 
-    ft_key_list <- split(ft_key,
-                         f = list(ft_key$game_code, ft_key$season),
-                         drop = TRUE)
-    assisted_ft_games <- game_split[names(game_split) %in% names(ft_key_list)]
+
+    assisted_fts_by_game <- split(
+        assisted_fts,
+        f = list(assisted_fts$game_code, assisted_fts$season),
+        drop = TRUE
+        )
+    # Select only games that have assisted FTs
+    assisted_ft_pbp <- pbp_by_game[names(pbp_by_game) %in% names(assisted_fts_by_game)]
+
+    # We could do the following step with the following purrr alternative
+    # purrr::map2_df(
+    #     assisted_ft_pbp,
+    #     assisted_fts_by_game,
+    #     function(pbp, ast_df) pbp[pbp$seconds %in% ast_df$seconds,]
+    # )
 
     ft_list <- Map(function(pbp, a) pbp[pbp$seconds %in% a$seconds,],
-                   pbp = assisted_ft_games, a = ft_key_list)
+                   pbp = assisted_ft_pbp, a = assisted_fts_by_game)
     ft_df <- do.call("rbind", ft_list) %>%
-        dplyr::mutate(seconds = factor(.data$seconds)) %>%
+        # dplyr::mutate(seconds = factor(.data$seconds)) %>%
         dplyr::group_by(.data$season, .data$game_code, .data$seconds) %>%
         dplyr::summarise(fta = sum(.data$play_type == "FTM" |
                                        .data$play_type == "FTA"),
@@ -68,8 +79,8 @@ get_assists <- function(df, team) {
             fta == 3 ~ "3FG"
             )
         )
-    assists_df$seconds <- as.character(assists_df$seconds)
-    ft_df$seconds <- as.character(ft_df$seconds)
+    assists_df$seconds <- as.integer(assists_df$seconds)
+    ft_df$seconds <- as.integer(ft_df$seconds)
     assists_df <- dplyr::left_join(assists_df, ft_df,
                                    by = c("season", "game_code", "seconds"))
 
@@ -92,25 +103,24 @@ get_assists <- function(df, team) {
 
     assists <- assists_df %>%
         dplyr::mutate(
-            seconds = as.integer(.data$seconds),
-            season = factor(.data$season),
             foul = as.logical(.data$foul),
-            shot_type = factor(.data$shot_type),
-            passer = droplevels(.data$passer),
-            shooter = droplevels(.data$shooter)
+            and1 = as.logical(.data$and1)
             ) %>%
-        dplyr::select(.data$game_code,
-                      .data$season,
-                      .data$passer,
-                      .data$shooter,
-                      .data$shot_type,
-                      .data$points,
-                      .data$time_remaining,
-                      .data$quarter,
-                      .data$seconds,
-                      .data$foul,
-                      .data$and1,
-                      .data$ftm)
+        dplyr::select(
+            .data$season,
+            .data$game_code,
+            .data$team_code,
+            .data$passer,
+            .data$shooter,
+            .data$shot_type,
+            .data$points,
+            .data$time_remaining,
+            .data$quarter,
+            .data$seconds,
+            .data$foul,
+            .data$and1,
+            .data$ftm
+        )
 
     tibble::as_tibble(assists)
 }
