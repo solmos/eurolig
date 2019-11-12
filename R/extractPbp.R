@@ -1,5 +1,39 @@
+#' Extracts play-by-play data for a single game
+#'
+#' \code{extractPbp} returns a data frame with the play-by-play data for
+#' the specified game.
+#'
+#' Each game is uniquely identified by the game code and the season. Game codes
+#' can be found in the included data set \code{\link{gameresults}} or using
+#' \code{\link{extractResults}}.
+#'
+#' Columns indicating the 10 players that were on the court at each event
+#' of the play-by-play data are included by default.
+#'
+#' @section Warning:
+#' Euroleague's API documentation sets a rate limit of 15 secods per request.
+#' Take this into consideration when requesting a large number of games.
+#'
+#' @param game_code Integer scalar specifying the game code
+#' @param season Integer scalar specifying the season
+#' @param lineups Logical scalar indicating whether to include
+#'   lineup information. Defaults to TRUE.
+#'
+#' @return A play-by-play data frame with the following variables:
+#'   \describe{
+#'     \item{season}{Starting year of the season}
+#'     \item{game_code}{}
+#'   }
+#' @export
+#'
+#' @examples
 extractPbp <- function(game_code, season, lineups = TRUE) {
-    # Scrape data and update game and season codes in case bad requests occurr
+
+    assertthat::assert_that(
+        assertthat::is.scalar(game_code),
+        assertthat::is.scalar(season),
+        msg = "game_code and season must be single integer values.")
+
     all_data <- scrapePbp(game_code, season)
     # game_code <- all_data$game_code
     # season_code <- all_data$season
@@ -116,6 +150,9 @@ extractPbp <- function(game_code, season, lineups = TRUE) {
             team_name = .data$TEAM
             # Include PLAYER_ID and DORSAL?
         )
+
+    # Replace "" values in team_code
+    pbp_final$team_code[pbp_final$team_code == ""] <- NA
 
     # Add column identifying the last free throw in a trip to the line
     pbp_final$last_ft <- FALSE

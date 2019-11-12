@@ -13,5 +13,17 @@ extractResults(season)
 A data frame with all the games in the given season
 }
 \description{
-Extract game results from a given season
+\code{extractResults} returns a data frame with all game results for
+a single season.
 }
+\details{
+\code{extractResults} is most useful for the current season (2019).
+For past seasons check the included data set \code{gameresults}.
+}
+\section{Note}{
+
+\code{extractResults} takes considerable time since it parses all
+web pages containing game results for the given season. Looping over
+many seasons may take a long time.
+}
+

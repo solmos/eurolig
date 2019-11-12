@@ -28,6 +28,7 @@ Imports:
     rlang,
     crayon,
     tidyr,
-    purrr
+    purrr,
+    assertthat
 Suggests: 
     testthat

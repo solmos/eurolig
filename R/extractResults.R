@@ -1,5 +1,18 @@
 #' Extract game results from a given season
 #'
+#' \code{extractResults} returns a data frame with all game results for
+#' a single season.
+#'
+#' \code{extractResults} is useful for the current season (2019).
+#' For past seasons check the included data set \code{gameresults}.
+#'
+#'
+#' @section Note:
+#' \code{extractResults} takes considerable time since it parses all
+#' web pages containing game results for the given season. Looping over
+#' many seasons may take a long time.
+#'
+#'
 #' @param season Integer indicating the season
 #'
 #' @return A data frame with all the games in the given season
@@ -29,7 +42,20 @@ extractResults <- function(season) {
 
     results_df <- do.call(rbind, results)
 
-    results_df
+    team_codes <- teaminfo[, c("season", "team_code", "team_name")]
+    results_output <- results_df %>%
+        dplyr::left_join(
+            team_codes,
+            by = c("season", team_home = "team_name")
+        ) %>%
+        dplyr::rename(team_code_home = .data$team_code) %>%
+        dplyr::left_join(
+            team_codes,
+            by = c("season", team_away = "team_name")
+        ) %>%
+        dplyr::rename(team_code_away = .data$team_code)
+
+    results_output
 }
 
 extractYearUrls <- function() {

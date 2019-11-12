@@ -1,36 +1,36 @@
 #' Get who assisted who from play-by-play data
 #'
-#' @param df Play-by-play data frame as produced by extract_pbp()
+#' @param pbp Play-by-play data frame as produced by extract_pbp()
 #' @param team An optional three letter string specifying the team code
 #'
 #' @return A data frame
 #' @export
 #'
 #' @examples
-getAssists <- function(df, team) {
+getAssists <- function(pbp, team) {
     ignored_plays <- c("IN", "OUT", "TOUT", "TOUT_TV")
 
-    df <- df %>%
+    pbp <- pbp %>%
         dplyr::filter(!(.data$play_type %in% ignored_plays))
     if (!missing(team)) {
-        df <- df %>%
+        pbp <- pbp %>%
             dplyr::filter(.data$team_code == team)
     }
     # Assisted FGM are recorded in the row above the assist row
-    assists_idx <- which(df$play_type == "AST")
+    assists_idx <- which(pbp$play_type == "AST")
     fg_idx <- assists_idx - 1
     assists_df <- data.frame(
-        passer = df$player_name[assists_idx],
-        shooter = df$player_name[fg_idx],
-        play_type = as.character(df$play_type[fg_idx]),
+        passer = pbp$player_name[assists_idx],
+        shooter = pbp$player_name[fg_idx],
+        play_type = as.character(pbp$play_type[fg_idx]),
         points = 0,
-        team_code = df$team_code[fg_idx],
-        seconds = df$seconds[fg_idx],
-        game_code = df$game_code[fg_idx],
-        season = df$season[fg_idx],
-        play_number = df$play_number[assists_idx],
-        time_remaining = df$time_remaining[fg_idx],
-        quarter = df$quarter[fg_idx],
+        team_code = pbp$team_code[fg_idx],
+        seconds = pbp$seconds[fg_idx],
+        game_code = pbp$game_code[fg_idx],
+        season = pbp$season[fg_idx],
+        play_number = pbp$play_number[assists_idx],
+        time_remaining = pbp$time_remaining[fg_idx],
+        quarter = pbp$quarter[fg_idx],
         stringsAsFactors = FALSE
     )
 
@@ -42,7 +42,7 @@ getAssists <- function(df, team) {
         dplyr::select(.data$play_type, .data$seconds,
                       .data$game_code, .data$season)
 
-    pbp_by_game <- split(df, list(df$game_code, df$season))
+    pbp_by_game <- split(pbp, list(pbp$game_code, pbp$season))
 
 
     assisted_fts_by_game <- split(
