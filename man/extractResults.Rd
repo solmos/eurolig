@@ -17,7 +17,7 @@ A data frame with all the games in the given season
 a single season.
 }
 \details{
-\code{extractResults} is most useful for the current season (2019).
+\code{extractResults} is useful for the current season (2019).
 For past seasons check the included data set \code{gameresults}.
 }
 \section{Note}{

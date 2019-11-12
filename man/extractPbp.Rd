@@ -35,7 +35,7 @@ of the play-by-play data are included by default.
 }
 \section{Warning}{
 
-Euroleague's API documentation sets a rate limit of 15 secods per request.
+Euroleague's API documentation asks for a delay of 15 secods per request.
 Take this into consideration when requesting a large number of games.
 }
 

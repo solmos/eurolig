@@ -9,6 +9,7 @@ Authors@R:
 Description: API wrapper around the official website of the Euroleague for easy
     extraction of basketball data. The package also provides tools to analyze 
     and visualize the data.
+Depends: R (>= 3.6.0)
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
