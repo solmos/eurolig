@@ -7,7 +7,7 @@
 attachLineups(pbp)
 }
 \arguments{
-\item{pbp}{Data frame as obtained by extract_pbp()}
+\item{pbp}{Play-by-play data frame.}
 }
 \value{
 Data frame with play-by-play data

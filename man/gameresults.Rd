@@ -3,7 +3,7 @@
 \docType{data}
 \name{gameresults}
 \alias{gameresults}
-\title{Euroleague game results (2001 to 2018).}
+\title{Euroleague game results (2001-2018).}
 \format{A data frame with 4173 rows and 13 variables:
 \describe{
   \item{season}{Year the season started.}
@@ -28,7 +28,6 @@
 gameresults
 }
 \description{
-A dataset containing information of all games played in Euroleague from
-2001 to 2018.
+Each game is uniquely idendified by the season and game code.
 }
 \keyword{datasets}

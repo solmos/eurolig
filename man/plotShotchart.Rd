@@ -7,8 +7,8 @@
 plotShotchart(shots)
 }
 \arguments{
-\item{shots}{}
+\item{shots}{A shot location data frame.}
 }
 \description{
-\code{plotShotchart} plots where shots were taking on the court.
+\code{plotShotchart} plots where shots were taken on the court.
 }

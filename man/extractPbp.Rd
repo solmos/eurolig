@@ -17,8 +17,8 @@ lineup information. Defaults to TRUE.}
 \value{
 A play-by-play data frame with the following variables:
   \describe{
-    \item{season}{Starting year of the season}
-    \item{game_code}{}
+    \item{season}{Starting year of the season.}
+    \item{game_code}{Game code.}
   }
 }
 \description{

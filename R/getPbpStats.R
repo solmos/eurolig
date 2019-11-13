@@ -16,19 +16,24 @@ getPbpStats <- function(pbp) {
     poss_by_game <- purrr::map_df(pbp_by_game, getPbpPoss)
 
     pbp %>%
-        dplyr::group_by(season, game_code, team_code, home) %>%
+        dplyr::group_by(
+            .data$season,
+            .data$game_code,
+            .data$team_code,
+            .data$home
+        ) %>%
         dplyr::summarise(
             fg2a = sum(.data$play_type == "2FGM" | .data$play_type == "2FGA"),
             fg2m = sum(.data$play_type == "2FGM"),
-            fg2_pct = fg2m / fg2a,
+            fg2_pct = .data$fg2m / .data$fg2a,
             fg3a = sum(.data$play_type == "3FGM" | .data$play_type == "3FGA"),
             fg3m = sum(.data$play_type == "3FGM"),
-            fg3_pct = fg3m / fg3a,
-            fga = fg2a + fg3a,
-            fgm = fg2m + fg3m,
+            fg3_pct = .data$fg3m / .data$fg3a,
+            fga = .data$fg2a + .data$fg3a,
+            fgm = .data$fg2m + .data$fg3m,
             fta = sum(.data$play_type == "FTM" | .data$play_type == "FTA"),
             ftm = sum(.data$play_type == "FTM"),
-            ft_pct = ftm / fta,
+            ft_pct = .data$ftm / .data$fta,
             orb = sum(.data$play_type == "ORB"),
             drb = sum(.data$play_type == "DRB"),
             tov = sum(.data$play_type == "TOV"),
@@ -37,7 +42,7 @@ getPbpStats <- function(pbp) {
             cpf = sum(.data$play_type == "CPF"),
             rpf = sum(.data$play_type == "RPF"),
             blk = sum(.data$play_type == "BLK"),
-            pts = 2 * fg2m + 3 * fg3m + ftm
+            pts = 2 * .data$fg2m + 3 * .data$fg3m + .data$ftm
         ) %>%
         dplyr::ungroup() %>%
         tidyr::drop_na() %>%

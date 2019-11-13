@@ -1,6 +1,6 @@
 #' Extracts and attachs lineups at all events of a play-by-play data frame
 #'
-#' @param pbp Data frame as obtained by extract_pbp()
+#' @param pbp Play-by-play data frame.
 #'
 #' @return Data frame with play-by-play data
 #' @export
@@ -64,7 +64,7 @@ extractStarters <- function(game_code, season) {
 #'
 #' \code{fixLineups} corrects the lineups in free throw stints so that free trhows are attributed to the lineups that were on the court when the foul occured
 #'
-#' @param pbp
+#' @param pbp A play-by-play data frame.
 #'
 #' @return
 #' @export

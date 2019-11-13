@@ -1,12 +1,18 @@
 #' Get stats for stints that players were on the floor
 #'
-#' \code{getStintStats2} parses a play-by-play data frame and returns the statistics while the players were on the court
+#' \code{getStintStats} parses a play-by-play data frame and returns the
+#' statistics while the players were on the court.
 #'
-#' @param pbp Play-by-play data frame
-#' @param players Character vector with the players on the court
-#' @param team Three letter string indicating the team code
 #'
-#' @return Data frame with stats on offense and defense when players were on the court
+#' @param pbp Play-by-play data frame.
+#' @param players Character vector with the players on the court.
+#' @param format_long Logical scalar indicating how output data frame should
+#'   be returned (defaults to TRUE).
+#'
+#' @return Data frame with stats on offense and defense when players were
+#'   on the court. If \code{format_long = TRUE} there will be two rows per
+#'   game: one for offense and one for defense. If \code{format_long = FALSE}
+#'   offense and defense stats for each game will be on the same row.
 #' @export
 #'
 #' @examples

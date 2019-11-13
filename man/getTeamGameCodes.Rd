@@ -7,7 +7,10 @@
 getTeamGameCodes(team, season)
 }
 \arguments{
-\item{season}{}
+\item{team}{Team code. Each team has a three letter code that uniquely
+identifies it. See \code{\link{teaminfo}}.}
+
+\item{season}{Integer scalar identifying the season.}
 }
 \description{
 \code{getGameCodes} returns the game codes for all the games played by

@@ -42,7 +42,7 @@ extractResults <- function(season) {
 
     results_df <- do.call(rbind, results)
 
-    team_codes <- teaminfo[, c("season", "team_code", "team_name")]
+    team_codes <- allteams[, c("season", "team_code", "team_name")]
     results_output <- results_df %>%
         dplyr::left_join(
             team_codes,

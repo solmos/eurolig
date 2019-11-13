@@ -7,15 +7,20 @@
 getStintStats(pbp, players, format_long = TRUE)
 }
 \arguments{
-\item{pbp}{Play-by-play data frame}
+\item{pbp}{Play-by-play data frame.}
 
-\item{players}{Character vector with the players on the court}
+\item{players}{Character vector with the players on the court.}
 
-\item{team}{Three letter string indicating the team code}
+\item{format_long}{Logical scalar indicating how output data frame should
+be returned (defaults to TRUE).}
 }
 \value{
-Data frame with stats on offense and defense when players were on the court
+Data frame with stats on offense and defense when players were
+  on the court. If \code{format_long = TRUE} there will be two rows per
+  game: one for offense and one for defense. If \code{format_long = FALSE}
+  offense and defense stats for each game will be on the same row.
 }
 \description{
-\code{getStintStats2} parses a play-by-play data frame and returns the statistics while the players were on the court
+\code{getStintStats} parses a play-by-play data frame and returns the
+statistics while the players were on the court.
 }

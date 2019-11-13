@@ -7,7 +7,7 @@
 fixLineups(pbp)
 }
 \arguments{
-\item{pbp}{}
+\item{pbp}{A play-by-play data frame.}
 }
 \description{
 \code{fixLineups} corrects the lineups in free throw stints so that free trhows are attributed to the lineups that were on the court when the foul occured

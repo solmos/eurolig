@@ -10,6 +10,8 @@ plot_network(pbp_df, team, n_min)
 \item{pbp_df}{Data frame with play-by-play data}
 
 \item{team}{A three letter string specifying the team code}
+
+\item{n_min}{Integer??}
 }
 \value{
 An igraph network plot

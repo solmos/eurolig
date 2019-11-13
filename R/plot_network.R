@@ -4,6 +4,7 @@
 #'
 #' @param pbp_df Data frame with play-by-play data
 #' @param team A three letter string specifying the team code
+#' @param n_min Integer??
 #'
 #' @return An igraph network plot
 #' @export

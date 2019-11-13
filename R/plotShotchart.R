@@ -1,8 +1,8 @@
 #' Plot shotcharts
 #'
-#' \code{plotShotchart} plots where shots were taking on the court.
+#' \code{plotShotchart} plots where shots were taken on the court.
 #'
-#' @param shots
+#' @param shots A shot location data frame.
 #'
 #' @return
 #' @export
