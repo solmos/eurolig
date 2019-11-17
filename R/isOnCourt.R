@@ -6,10 +6,13 @@
 #' @param pbp A play-by-play data frame
 #' @param players A character vector with the nemes of the players
 #'
-#' @return
+#' @return Logical vector indicating whether the specified players were
+#'   on the court at each event of the play-by-play data frame.
 #' @export
 #'
 #' @examples
+#' data("samplepbp")
+#' isOnCourt(samplepbp, players = c("FERNANDEZ, RUDY", "AYON, GUSTAVO"))
 isOnCourt <- function(pbp, players) {
     players_on <- purrr::map_dfc(
         players,

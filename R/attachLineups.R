@@ -2,11 +2,13 @@
 #'
 #' @param pbp Play-by-play data frame.
 #'
-#' @return Data frame with play-by-play data
+#' @keywords internal
+#'
+#' @return The original play-by-play data with 11 extra variables identifying
+#'   the players that were on the floor at each event.
 #' @export
 #'
 #' @examples
-
 attachLineups <- function(pbp) {
     game_code <- unique(pbp$game_code)
     season <- unique(pbp$season)
@@ -62,11 +64,15 @@ extractStarters <- function(game_code, season) {
 
 #' Correct lineups in play-by-play data
 #'
-#' \code{fixLineups} corrects the lineups in free throw stints so that free trhows are attributed to the lineups that were on the court when the foul occured
+#' \code{fixLineups} corrects the lineups in free throw stints so that free
+#' trhows are attributed to the lineups that were on the court when
+#' the foul occured.
 #'
 #' @param pbp A play-by-play data frame.
 #'
-#' @return
+#' @keywords internal
+#'
+#' @return A data frame with the corrected lineups
 #' @export
 #'
 #' @examples
@@ -110,6 +116,8 @@ fixLineups <- function(pbp) {
 #' Get the lineup on the court at the start of a free throw stint
 #'
 #' @param ft_stint A data frame
+#'
+#' @keywords internal
 #'
 #' @return A data frame with the corrected lineups
 #' @export

@@ -9,7 +9,37 @@ getPbpStats(pbp)
 \arguments{
 \item{pbp}{A play-by-play data frame}
 }
+\value{
+A data frame with 2 rows per game and 25 variables:
+  @return A data frame with 4 rows per game and 28 variables:
+  \describe{
+    \item{season}{Starting year of the season}
+    \item{game_code}{Game code}
+    \item{team_code}{Team code.}
+    \item{home}{Whether the team was playing at home or not}
+    \item{fg2a}{2PA}
+    \item{fg2m}{2PM}
+    \item{fg2_pct}{2P\%}
+    \item{fg3a}{3PA}
+    \item{fg3m}{3PM}
+    \item{fg3_pct}{3P\%}
+    \item{fga}{FGA}
+    \item{fgm}{FGM}
+    \item{fg_pct}{FG\%}
+    \item{fta}{FTA}
+    \item{ftm}{FTM}
+    \item{ft_pct}{FT\%}
+    \item{orb}{ORB}
+    \item{drb}{DRB}
+    \item{tov}{TOV}
+    \item{ast}{AST}
+    \item{stl}{STL}
+    \item{cpf}{Comitted personal fouls}
+    \item{blk}{BLK}
+    \item{pts}{PTS}
+    \item{poss}{Possessions}
+  }
+}
 \description{
-\code{getPbpStats} returns boxscore statistics from play-by-play data from
-one or more games.
+\code{getPbpStats} returns boxscore team statistics from play-by-play data.
 }

@@ -12,10 +12,11 @@
 #' web pages containing game results for the given season. Looping over
 #' many seasons may take a long time.
 #'
+#' @family extract functions
 #'
-#' @param season Integer indicating the season
+#' @param season Integer scalar indicating the season
 #'
-#' @return A data frame with all the games in the given season
+#' @return A data frame with all the games in the given season.
 #' @export
 #'
 #' @examples
@@ -53,7 +54,8 @@ extractResults <- function(season) {
             team_codes,
             by = c("season", team_away = "team_name")
         ) %>%
-        dplyr::rename(team_code_away = .data$team_code)
+        dplyr::rename(team_code_away = .data$team_code) %>%
+        dplyr::arrange(dplyr::desc(.data$season), dplyr::desc(.data$game_code))
 
     results_output
 }
@@ -187,13 +189,13 @@ extractGames <- function(round_url) {
     tibble::tibble(
         season = as.integer(round_info$season),
         phase = round_info$phase,
-        round_name = round_name,
         team_home = home_teams,
         points_home = as.integer(points_home),
         team_away = away_teams,
         points_away = as.integer(points_away),
         game_code = as.integer(game_codes),
         date = game_dates,
+        round_name = round_name,
         round_code = as.integer(round_info$round_number),
         game_url = game_urls
     )

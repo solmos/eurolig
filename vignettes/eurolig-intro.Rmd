@@ -1,0 +1,90 @@
+---
+title: "Introduction to eurolig"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{eurolig-intro}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+eurolig provides a toolkit to easily retrieve and analyze basketball data for the Euroleague. This vignette introduces the package and shows how it could be used to do some basic analyses.
+
+## Required packages
+
+The following packages are needed to reproduce this vignette:
+
+```{r setup, message = FALSE}
+library(eurolig)
+library(dplyr)
+library(ggplot2)
+```
+
+## Getting data
+
+### Datasets
+
+Several datasets are included in the package. You can see all the available datasets in the package by calling:
+```{r, eval = FALSE}
+data(package = "eurolig")
+```
+
+
+Sample datasets of play-by-play and shot location data are stored in `samplepbp` and `sampleshots`, respectively.
+
+A particularly useful dataset in the package is `gameresults`. It contains all game results in the Euroleague from the 2001/2002 season to the 2018/2019 season. As you will see in the next section, this dataset can be useful to find the games you want to get data from.
+
+Finally, if we need to find the name or identifying code of teams, the `teaminfo` dataset can be helpful.
+
+
+### `extract` functions
+
+Functions that retrieve data from Euroleague's website API start with the verb `extract`. You will need to be online for these functions to work.
+
+The main functions to get data are:
+
+* `extractPbp()` for play-by-play data.
+
+* `extractShots()` for shot location data.
+
+These functions can only retrieve data from a single game. That means that if you want to get data for several games you will need to iterate the function over the games of interest. Note, however, that Euroleague's `robot.txt` asks for a 15 (!) seconds delay between requests. Take this into consideration when requesting data for a lot of games.
+
+Games are uniquely identified by a combination of season and game code. In order to indicate the `extract` functions what game we want to get data from, we need to pass the corresponding game code and season as arguments.
+
+Let's find the highest scoring games from the 2018/2019 season in the `gameresults` dataset:
+```{r}
+games <- gameresults %>% 
+  filter(season == 2018) %>% 
+  mutate(total_points = points_home + points_away) %>% 
+  arrange(desc(total_points)) %>% 
+  head()
+```
+
+We can see that last season's highest scoring game was the Herbalife Gran Canaria vs. AX Armani Exchange Olimpia Milan with 210 total points scored between the two teams. The identifying game code and season for this game are
+```{r}
+games$season[1]
+games$game_code[1]
+```
+
+We can get play-by-play and shot location data for this game by passing these values as arguments to `extractShots()` and `extractPbp()`:
+```{r, eval = FALSE}
+game_shots <- extractShots(game_code = 168, season = 2018)
+game_pbp <- extractPbp(168, 2018)
+```
+
+If you want to find games for the current season (not included in the `gameresults` dataset), you have two options: either look up the game code in the game's url or use `extractResults()`.
+
+Play-by-play and shot location data are only available since the 2007/2008 season.
+
+## Analyzing play-by-play data
+
+Play-by-play data provides jdjgghggh
+
+
+## Analyzing shot location data

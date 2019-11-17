@@ -11,7 +11,15 @@ isOnCourt(pbp, players)
 
 \item{players}{A character vector with the nemes of the players}
 }
+\value{
+Logical vector indicating whether the specified players were
+  on the court at each event of the play-by-play data frame.
+}
 \description{
 \code{isOnCourt} finds if a player or a set of players is on the court
 for each event of play-by-play data with lineup information.
+}
+\examples{
+data("samplepbp")
+isOnCourt(samplepbp, players = c("FERNANDEZ, RUDY", "AYON, GUSTAVO"))
 }

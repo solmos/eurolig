@@ -2,6 +2,8 @@
 #'
 #' @param pbp Play-by-play data frame
 #'
+#' @keywords internal
+#'
 #' @return Integer vector with the indexes of the last free throws
 #' @export
 #'
@@ -21,6 +23,8 @@ isLastFt <- function(pbp) {
 #'
 #' @param ft_stint Data frame with all events in a single trip to the line
 #'
+#' @keywords internal
+#'
 #' @return Integer scalar indicating the play_number of the last free throw in the stint
 #' @export
 #'
@@ -30,6 +34,7 @@ whichLastFtInStint <- function(ft_stint) {
     last_ft_play_number <- ft_stint$play_number[ft_idx][length(ft_idx)]
     last_ft_play_number
 }
+
 
 whichAnd1InStint <- function(ft_stint) {
     ft_idx <- which(ft_stint$play_type == "FTA" | ft_stint$play_type == "FTM")

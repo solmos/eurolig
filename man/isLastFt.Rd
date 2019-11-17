@@ -15,3 +15,4 @@ Integer vector with the indexes of the last free throws
 \description{
 Find all last free throws in play-by-play data
 }
+\keyword{internal}

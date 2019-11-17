@@ -15,3 +15,4 @@ A data frame with the corrected lineups
 \description{
 Get the lineup on the court at the start of a free throw stint
 }
+\keyword{internal}

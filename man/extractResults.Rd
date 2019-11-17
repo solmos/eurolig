@@ -7,10 +7,10 @@
 extractResults(season)
 }
 \arguments{
-\item{season}{Integer indicating the season}
+\item{season}{Integer scalar indicating the season}
 }
 \value{
-A data frame with all the games in the given season
+A data frame with all the games in the given season.
 }
 \description{
 \code{extractResults} returns a data frame with all game results for
@@ -27,3 +27,7 @@ web pages containing game results for the given season. Looping over
 many seasons may take a long time.
 }
 
+\seealso{
+Other extract functions: \code{\link{extractPbp}}
+}
+\concept{extract functions}

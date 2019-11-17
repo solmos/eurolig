@@ -15,3 +15,4 @@ Integer scalar indicating the play_number of the last free throw in the stint
 \description{
 Find last free throw of a single trip to the foul line
 }
+\keyword{internal}

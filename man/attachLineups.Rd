@@ -10,8 +10,10 @@ attachLineups(pbp)
 \item{pbp}{Play-by-play data frame.}
 }
 \value{
-Data frame with play-by-play data
+The original play-by-play data with 11 extra variables identifying
+  the players that were on the floor at each event.
 }
 \description{
 Extracts and attachs lineups at all events of a play-by-play data frame
 }
+\keyword{internal}

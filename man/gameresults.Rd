@@ -3,19 +3,19 @@
 \docType{data}
 \name{gameresults}
 \alias{gameresults}
-\title{Euroleague game results (2001-2018).}
+\title{Euroleague game results (2001-2018)}
 \format{A data frame with 4173 rows and 13 variables:
 \describe{
   \item{season}{Year the season started.}
   \item{phase}{Phase of the season: regular season (RS), top 16 (TS),
     Playoffs (PO), and Final Four (FF).}
-  \item{round_name}{The round within a phase.}
   \item{team_home}{Full team name of the home team.}
   \item{points_home}{Points scored by the home team.}
   \item{team_away}{Full team name of the away team.}
   \item{points_away}{Points scored by the away team.}
   \item{game_code}{Game code partially identifying the game.}
   \item{date}{Date of the game.}
+  \item{round_name}{The round within a phase.}
   \item{round_code}{Round code.}
   \item{game_url}{Game url.}
   \item{team_code_home}{Team code of home team.}
