@@ -3,6 +3,9 @@
 #' Downloads play-by-play data of all games that a given team has played
 #' in the specified season
 #'
+#' @section Warning:
+#' This functions may take over a minute to return the large output data frame
+#'
 #' @param team A three letter string specifying the team code
 #' @param season An integer specifying the starting year of the desired season
 #'
@@ -10,9 +13,9 @@
 #' @export
 #'
 #' @examples
-extract_team_pbp <- function(team, season) {
-    game_results <- scrape_team_results(team, season)
+extractTeamPbp <- function(team, season) {
+    game_results <- extractTeamResults(team, season)
     game_codes <- game_results$game_code
-    pbp <- extract_pbp(game_codes, season)
+    pbp <- purrr::map_df(game_codes, extractPbp, season = season)
     pbp
 }

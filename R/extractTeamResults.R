@@ -5,11 +5,13 @@
 #' @param team A three letter string specifying the team code
 #' @param season An integer specifying the starting year of the desired season
 #'
+#'
 #' @return A tibble
 #' @export
 #'
 #' @examples
-scrape_team_results <- function(team, season) {
+#' extractTeamResults(team = "BAR", season = 2017)
+extractTeamResults <- function(team, season) {
     base_url <- "https://www.euroleague.net/competition/teams/showteam?"
     query <- paste0("clubcode=", team,"&seasoncode=E", season, "#!games")
     team_url <- paste0(base_url, query)
