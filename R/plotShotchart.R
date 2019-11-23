@@ -4,7 +4,7 @@
 #'
 #' @param shots A shot location data frame.
 #'
-#' @return
+#' @return A ggolot object.
 #' @export
 #'
 #' @examples

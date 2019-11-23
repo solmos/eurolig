@@ -9,6 +9,9 @@ plotShotchart(shots)
 \arguments{
 \item{shots}{A shot location data frame.}
 }
+\value{
+A ggolot object.
+}
 \description{
 \code{plotShotchart} plots where shots were taken on the court.
 }

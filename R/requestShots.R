@@ -1,3 +1,17 @@
+#' Request shot location data from Euroleague's API
+#'
+#' \code{requestShots} returns the raw data frame obtained when using
+#' Euroleague's API.
+#'
+#' @keywords internal
+#'
+#' @param game_code Integer scalar
+#' @param season Integer scalar
+#'
+#' @return
+#' @export
+#'
+#' @examples
 requestShots <- function(game_code, season) {
     assertthat::assert_that(
         assertthat::is.scalar(game_code),
@@ -11,8 +25,7 @@ requestShots <- function(game_code, season) {
     api_request <- tryCatch(
         httr::GET(
             base_api,
-            query = list(gamecode = game_code, seasoncode = season_code),
-            httr::timeout(2)
+            query = list(gamecode = game_code, seasoncode = season_code)
         ),
         message = "Try starting a new R session."
     ) %>%

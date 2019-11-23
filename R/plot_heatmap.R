@@ -10,7 +10,7 @@
 #'
 #' @examples
 plot_heatmap <- function(pbp, team) {
-    assists <- get_assists(pbp, team)
+    assists <- getAssists(pbp, team)
 
     # Make passer and shooter factors have the same levels so that
     # we get all combinations with tidyr::complete()
