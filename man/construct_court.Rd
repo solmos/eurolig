@@ -7,7 +7,8 @@
 construct_court()
 }
 \value{
-A list containing data frames corresponding to different parts of the court
+A list containing data frames corresponding to different parts of
+  the court
 }
 \description{
 Construct coordinates of basketball court

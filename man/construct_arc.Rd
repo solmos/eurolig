@@ -29,3 +29,4 @@ plot(circle$x, circle$y, type = "l")
 arc <- construct_arc(2, 1, 5, start = pi, stop = pi / 2)
 plot(arc$x, arc$y, type = "l")
 }
+\keyword{internal}
