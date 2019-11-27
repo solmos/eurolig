@@ -11,7 +11,7 @@
 plotShotchart <- function(shots) {
     court <- construct_court()
     ggplot(shots, aes_(~ coord_x, ~ coord_y)) +
-        geom_point(aes_(color = ~ action_id)) +
+        geom_point(aes_(color = ~ make), alpha = 0.8) +
         geom_path(data = court$outer_lines, aes_(~ x, ~ y)) +
         geom_path(data = court$paint, aes_(~ x, ~ y)) +
         geom_path(data = court$arc3, aes_(~ x, ~ y)) +
@@ -26,7 +26,8 @@ plotShotchart <- function(shots) {
 
 #' Construct coordinates of basketball court
 #'
-#' @return A list containing data frames corresponding to different parts of the court
+#' @return A list containing data frames corresponding to different parts of
+#'   the court
 #' @export
 #'
 #' @examples
@@ -125,6 +126,8 @@ construct_court <- function() {
 #' @param r Radius
 #' @param start In radians from 0 to pi
 #' @param stop In radians from 0 to pi
+#'
+#' @keywords internal
 #'
 #' @return Data frame with x, y coordinates
 #' @export
