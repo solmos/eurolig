@@ -14,7 +14,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-eurolig provides a toolkit to easily retrieve and analyze basketball data for the Euroleague. This vignette introduces the package and shows how it could be used to do some basic analyses.
+eurolig provides a toolkit to easily retrieve and analyze basketball generated data for the Euroleague. The package is mainly designed to work with two types of data: play-by-play data and shot location data. Although Euroleague's first season was in 2000, play-by-play and shot location data is only available since the 2007/2008 season.
+
+This vignette introduces the package (v0.4.0) and shows how it could be used to do some basic analyses.
 
 ## Required packages
 
@@ -53,7 +55,7 @@ The main functions to get data are:
 
 * `extractShots()` for shot location data.
 
-These functions can only retrieve data from a single game. That means that if you want to get data for several games you will need to iterate the function over the games of interest. Note, however, that Euroleague's `robot.txt` asks for a 15 (!) seconds delay between requests. Take this into consideration when requesting data for a lot of games.
+These functions can only retrieve data from a single game. That means that if you want to get data for several games you will need to iterate the function over the games of interest. Note, however, that **Euroleague's `robot.txt` asks for a 15 (!) seconds delay between requests**. Take this into consideration when requesting data for a lot of games.
 
 Games are uniquely identified by a combination of season and game code. In order to indicate the `extract` functions what game we want to get data from, we need to pass the corresponding game code and season as arguments.
 
@@ -80,11 +82,91 @@ game_pbp <- extractPbp(168, 2018)
 
 If you want to find games for the current season (not included in the `gameresults` dataset), you have two options: either look up the game code in the game's url or use `extractResults()`.
 
-Play-by-play and shot location data are only available since the 2007/2008 season.
 
 ## Analyzing play-by-play data
 
-Play-by-play data provides jdjgghggh
+Play-by-play data provides a lot of information that traditional boxscore statistics fail to communicate. In the following subsections I am going to show how we can find the following information from play-by-play data:
+
+* Plus-Minus for one or more players.
+
+* On/Off statistics for one or more players.
+
+* Assists patterns within a team
+
+For these analyses I am going to use the sample dataset `samplepbp` which contains the play-by-play data for all four games of the 2018/2019 Euroleague Final Four:
+```{r}
+data("samplepbp")
+glimpse(samplepbp)
+```
+
+
+### Plus-Minus
+
+Plus-minus (+/-) measures the difference in team points scored and team points allowed while a player or a set of players of the same team are on the court. `getPlusMinus()` parses a play-by-play data frame with one or more games and returns the indicated player/s plus-minus statistic in each game.
+
+Although widely used nowadays, it is important to note that raw plus-minus is very unstable and totally context dependent. It is, however, the building block for other more advanced stats such as RAPM or RPM.
+
+Let's check what Sergio Rodriguez (aka El Chacho) plus-minus was in the two Final Four games that he played in the 2018/2019 season:
+```{r}
+chacho_pm <- getPlusMinus(pbp = samplepbp, players = "RODRIGUEZ, SERGIO")
+# Select only a few columns so that data frame fits in the document
+chacho_pm %>% 
+  select(game_code, team_code_opp, poss, poss_opp, plus_minus)
+```
+
+Note that you can find the plus-minus statistic for combinations of players by entering a character vector with the player names in the `players` argument.
+
+### On/Off Statistics
+
+On/Off statistics for a player or a set of players measure team statistics when the player or players where on the court and when they were on the bench.
+
+You can use `getOnOffStats()` to find on/off statistics. For instance, I can find out how Real Madrid did when Rudy and Ayón were together on the court versus when both were on the bench in the two games played in the 2018/2019 Final Four.
+```{r}
+getOnOffStats(pbp = samplepbp, players = c("FERNANDEZ, RUDY", "AYON, GUSTAVO"))
+```
+
+Note that `getOnOffStats()` returns 4 rows per game corresponding to:
+
+* Team statistics when players were on the court together.
+
+* Opposing team statistics when players were on the court together.
+
+* Team statistics when players were on the bench together.
+
+* Opposing team statistics when players were on the bench together.
+
+
+### Assists patterns
+
+Play-by-play data allows us to find out who assists who on assisted baskets. The function `getAssists()` returns a data frame with the passer and the shooter (plus more contextual information) for all assisted baskets in the input play-by-play data.
+
+I am going to use `getAssists()` and some data wrangling to find out the most common assists in CSKA Moscow during the two games of the 2018/2019 Final Four:
+```{r}
+assists_csk <- getAssists(pbp = samplepbp, team = "CSK")
+assists_csk %>% 
+  count(passer, shooter) %>% 
+  arrange(desc(n))
+```
+
 
 
 ## Analyzing shot location data
+
+Shot location data specifies the x and y coordinates of every jump shot taken during a game. This data can be useful for, say, identifying shooting location tenedencies on offense of a given player/team, showing what spots on the court a player is most effective at, or analyzing what type of shots a team allows its opponents.
+
+For the following analysis, I am going to use the `sampleshots` dataset, which contains the shot location data for the four games in the 2018/2019 Final Four.
+
+```{r}
+glimpse(sampleshots)
+```
+
+You can see in addition to the x-y coordinates, `coord_x` and `coord_y`, there are variables that give you more contextual information such as the player that took the shot, the time in the clock when the shot was taken or whether the shot was after an offensive rebound. These variables can help you filter specific shot types.
+
+The function `plotShotChart()` allows you to show graphically where the shots were taken on the court and colored according to whether the shot went in (green) or not (red). The returned object is a ggplot object that we can customize with ggplot2 functions:
+```{r shotchart, fig.height = 4, fig.width = 4}
+plotShotchart(sampleshots) +
+  labs(title = "Euroleague 2018/2019 Final Four") +
+  theme(legend.position = "bottom")
+```
+
+
