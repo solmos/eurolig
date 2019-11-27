@@ -4,14 +4,17 @@
 #'
 #' @param pbp_df Data frame with play-by-play data
 #' @param team A three letter string specifying the team code
-#' @param n_min Integer??
+#' @param n_min Integer scalar specifying the minimum number of assists to be
+#'   considered
+#'
+#' @keywords internal
 #'
 #' @return An igraph network plot
 #' @export
 #'
 #' @examples
-plot_network <- function(pbp_df, team, n_min) {
-    assist_df <- get_assists(pbp_df, team)
+plotAstNetwork <- function(pbp_df, team, n_min) {
+    assist_df <- getAssists(pbp_df, team)
     n_assists <- assist_df %>%
         dplyr::group_by(.data$passer) %>%
         dplyr::count()
