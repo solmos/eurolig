@@ -1,6 +1,6 @@
 Package: eurolig
 Title: eurolig: Extract and analyze Euroleague basketball data
-Version: 0.0.0.9000
+Version: 0.4.0
 Authors@R: 
     person(given = "Sergio",
            family = "Olmos Pardo",
