@@ -5,6 +5,7 @@
 #' @param pbp Play-by-play data frame
 #' @param team A three letter string specifying the team code
 #'
+#' @keywords internal
 #' @return A ggplot heatmap
 #' @export
 #'
@@ -14,15 +15,15 @@ plot_heatmap <- function(pbp, team) {
 
     # Make passer and shooter factors have the same levels so that
     # we get all combinations with tidyr::complete()
-    player_levels <- unique(c(levels(assists$passer), levels(assists$shooter)))
-    levels(assists$passer) <- player_levels
-    levels(assists$shooter) <- player_levels
+    # player_levels <- unique(c(levels(assists$passer), levels(assists$shooter)))
+    # levels(assists$passer) <- player_levels
+    # levels(assists$shooter) <- player_levels
 
     # We want to include number of assists in the diagonal of our heatmap
     n_assists <- assists %>%
         dplyr::group_by(.data$passer) %>%
         dplyr::summarise(assists = dplyr::n())
-    levels(n_assists$passer) <- player_levels
+    # levels(n_assists$passer) <- player_levels
 
     coordinates <- tibble::tibble(
         passer = factor(player_levels, levels = player_levels),
