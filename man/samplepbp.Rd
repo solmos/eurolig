@@ -4,7 +4,7 @@
 \name{samplepbp}
 \alias{samplepbp}
 \title{Euroleague 2018/2019 Final Four play-by-play dataset}
-\format{A play-by-play data frame with the following variables:
+\format{A play-by-play data frame with 2,121 rows and 29 variables:
   \describe{
     \item{season}{Starting year of the season}
     \item{game_code}{Game code}

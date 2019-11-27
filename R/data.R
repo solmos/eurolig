@@ -2,7 +2,7 @@
 #'
 #' Each game is uniquely idendified by the season and game code.
 #'
-#' @format A data frame with 4173 rows and 13 variables:
+#' @format A data frame with 4,173 rows and 13 variables:
 #' \describe{
 #'   \item{season}{Year the season started.}
 #'   \item{phase}{Phase of the season: regular season (RS), top 16 (TS),
@@ -37,7 +37,7 @@
 
 #' Euroleague 2018/2019 Final Four play-by-play dataset
 #'
-#' @format A play-by-play data frame with the following variables:
+#' @format A play-by-play data frame with 2,121 rows and 29 variables:
 #'   \describe{
 #'     \item{season}{Starting year of the season}
 #'     \item{game_code}{Game code}
@@ -64,3 +64,36 @@
 #'
 #' @source \url{https://www.euroleague.net/}
 "samplepbp"
+
+#' Euroleague 2018/2019 Final Four shot location dataset
+#'
+#' @format A shot location data frame with 490 rows and 25 variables:
+#'   \describe{
+#'     \item{season}{Starting year of the season}
+#'     \item{game_code}{Game code}
+#'     \item{num_anot}{Not sure!}
+#'     \item{team_code}{Team code of player taking the shot}
+#'     \item{player_id}{Player ID}
+#'     \item{player_name}{Full player name (Last name, First name)}
+#'     \item{action_id}{Shot type and outcome}
+#'     \item{action}{Full description of action_id}
+#'     \item{points}{Points added with the shot}
+#'     \item{coord_x, coord_y}{x-y coordinates}
+#'     \item{zone}{Zone on the court}
+#'     \item{fastbreak}{Was the shot taken on a fastbreak?}
+#'     \item{second_chance}{Was the shot taken after an offensive rebound?}
+#'     \item{points_off_turnover}{Was the shot taken after a turnover from the other team?}
+#'     \item{minute}{Minute in the game}
+#'     \item{console}{Time remaining in the shot clock}
+#'     \item{points_a}{Points scored by Team A after the shot was taken}
+#'     \item{points_b}{Points scored by Team B after the shot was taken}
+#'     \item{utc}{Datetime when the shot was logged}
+#'     \item{quarter}{Quarter}
+#'     \item{seconds}{Seconds elapsed since the start of the game}
+#'     \item{make}{Did the shot go in?}
+#'     \item{team_code_a}{Team A code}
+#'     \item{team_code_b}{Team B code}
+#'   }
+#'
+#' @source \url{https://www.euroleague.net/}
+"sampleshots"

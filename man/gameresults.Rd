@@ -4,7 +4,7 @@
 \name{gameresults}
 \alias{gameresults}
 \title{Euroleague game results (2001-2018)}
-\format{A data frame with 4173 rows and 13 variables:
+\format{A data frame with 4,173 rows and 13 variables:
 \describe{
   \item{season}{Year the season started.}
   \item{phase}{Phase of the season: regular season (RS), top 16 (TS),
