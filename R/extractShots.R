@@ -20,7 +20,8 @@ extractShots <- function(game_code, season) {
             team_code = .data$team,
             player_id = .data$id_player,
             player_name = .data$player,
-            action_id = .data$id_action
+            action_id = .data$id_action,
+            off_turnover = .data$points_off_turnover
         ) %>%
         dplyr::mutate(
             # Transform coordinates to fit into court plot
@@ -28,7 +29,11 @@ extractShots <- function(game_code, season) {
             coord_x = .data$coord_x / 98,
             coord_y = .data$coord_y / 98 + 1.575,
             team_code = trimws(.data$team_code),
-            player_id = trimws(.data$player_id)
+            player_id = trimws(.data$player_id),
+            make = .data$points != 0,
+            fastbreak = as.logical(as.integer(.data$fastbreak)),
+            second_chance = as.logical(as.integer(.data$second_chance)),
+            off_turnover = as.logical(as.integer(.data$off_turnover))
         ) %>%
         dplyr::filter(.data$action_id != "FTM")
 
@@ -49,14 +54,10 @@ extractShots <- function(game_code, season) {
 
     # Quarter as integer or factor??
     quarters <- as.integer(quarters)
-
     shots$quarter <- quarters
 
     seconds <- getSecondsElapsed(shots$quarter, shots$console)
     shots$seconds <- seconds
-
-    makes <- shots$points != 0
-    shots$make <- makes
 
     # Find which team is A and B
     team_a_idx <- which(shots$points_a != 0)[1]
