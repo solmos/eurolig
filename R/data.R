@@ -82,15 +82,15 @@
 #'     \item{zone}{Zone on the court}
 #'     \item{fastbreak}{Was the shot taken on a fastbreak?}
 #'     \item{second_chance}{Was the shot taken after an offensive rebound?}
-#'     \item{points_off_turnover}{Was the shot taken after a turnover from the other team?}
+#'     \item{off_turnover}{Was the shot taken after a turnover from the other team?}
 #'     \item{minute}{Minute in the game}
 #'     \item{console}{Time remaining in the shot clock}
 #'     \item{points_a}{Points scored by Team A after the shot was taken}
 #'     \item{points_b}{Points scored by Team B after the shot was taken}
 #'     \item{utc}{Datetime when the shot was logged}
+#'     \item{make}{Did the shot go in?}
 #'     \item{quarter}{Quarter}
 #'     \item{seconds}{Seconds elapsed since the start of the game}
-#'     \item{make}{Did the shot go in?}
 #'     \item{team_code_a}{Team A code}
 #'     \item{team_code_b}{Team B code}
 #'   }
