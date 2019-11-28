@@ -12,8 +12,33 @@ extractShots(game_code, season)
 \item{season}{Integer scalar}
 }
 \value{
-Data frame with shot location data and additional contextual
-  information about each shot.
+Data frame with 25 variables:
+  \describe{
+    \item{season}{Starting year of the season}
+    \item{game_code}{Game code}
+    \item{num_anot}{Not sure!}
+    \item{team_code}{Team code of player taking the shot}
+    \item{player_id}{Player ID}
+    \item{player_name}{Full player name (Last name, First name)}
+    \item{action_id}{Shot type and outcome}
+    \item{action}{Full description of action_id}
+    \item{points}{Points added with the shot}
+    \item{coord_x, coord_y}{x-y coordinates}
+    \item{zone}{Zone on the court}
+    \item{fastbreak}{Was the shot taken on a fastbreak?}
+    \item{second_chance}{Was the shot taken after an offensive rebound?}
+    \item{off_turnover}{Was the shot taken after a turnover from the other team?}
+    \item{minute}{Minute in the game}
+    \item{console}{Time remaining in the shot clock}
+    \item{points_a}{Points scored by Team A after the shot was taken}
+    \item{points_b}{Points scored by Team B after the shot was taken}
+    \item{utc}{Datetime when the shot was logged}
+    \item{make}{Did the shot go in?}
+    \item{quarter}{Quarter}
+    \item{seconds}{Seconds elapsed since the start of the game}
+    \item{team_code_a}{Team A code}
+    \item{team_code_b}{Team B code}
+  }
 }
 \description{
 \code{extractShots} returns a data frame with coordinate location data on
