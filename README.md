@@ -6,7 +6,7 @@
 [![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 
 The eurolig package provides a set of tools to obtain and analyze
-basketball data from the Euroleague.
+basketball generated data from the Euroleague.
 
 ## Overview
 
@@ -30,8 +30,8 @@ devtools::install_github("solmos/eurolig")
 Let’s say we want to analyze play-by-play data from the Championship
 game of the 2017-2018 season between Real Madrid and Fenerbache Dogus
 Istanbul. We can obtain the data by entering the game code and the
-season to the function `extract_pbp()`. The game code for the game can
-be found in the game’s
+season to the function `extractPbp()`. The game code for the game can be
+found in the game’s
 [URL](https://www.euroleague.net/main/results/showgame?gamecode=260&seasoncode=E2017).
 
 ``` r
