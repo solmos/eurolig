@@ -17,3 +17,4 @@ A ggplot heatmap
 \description{
 \code{plot_heatmap} creates a heatmap indicating who assists who
 }
+\keyword{internal}
