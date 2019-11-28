@@ -14,9 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-eurolig provides a toolkit to easily retrieve and analyze basketball generated data for the Euroleague. The package is mainly designed to work with two types of data: play-by-play data and shot location data. Although Euroleague's first season was in 2000, play-by-play and shot location data is only available since the 2007/2008 season.
-
-This vignette introduces the package (v0.4.0) and shows how it could be used to do some basic analyses.
+eurolig provides a toolkit to easily retrieve and analyze basketball generated data for the Euroleague. The package is mainly designed to work with two types of data: play-by-play data and shot location data. Although Euroleague's first season was in 2000, play-by-play and shot location data is only available since the 2007/2008 season. This vignette introduces the package (v0.4.0) and shows how it could be used to do some basic analyses.
 
 ## Required packages
 
