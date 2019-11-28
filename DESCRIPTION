@@ -28,7 +28,6 @@ Imports:
     tibble,
     xml2,
     rlang,
-    crayon,
     tidyr,
     purrr,
     assertthat
