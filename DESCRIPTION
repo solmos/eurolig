@@ -1,14 +1,15 @@
 Package: eurolig
-Title: eurolig: Extract and analyze Euroleague basketball data
+Title: Extract and Analyze Euroleague Basketball Generated Data
 Version: 0.4.0
 Authors@R: 
     person(given = "Sergio",
            family = "Olmos Pardo",
            role = c("aut", "cre"),
            email = "s.olmos.pardo@gmail.com")
-Description: API wrapper around the official website of the Euroleague for easy
-    extraction of basketball data. The package also provides tools to analyze 
-    and visualize the data.
+Description: The eurolig package provides a set of tools to obtain and analyze
+    basketball generated data from the Euroleague. It uses Euroleague's API to
+    request the data and provides tools to produce commonly used 
+    statistics and visualizations.
 Depends: R (>= 3.6.0)
 License: MIT + file LICENSE
 Encoding: UTF-8
