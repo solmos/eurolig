@@ -13,7 +13,7 @@
 getPlusMinus <- function(pbp, players) {
     stats_players_wide <- getStintStats(pbp, players, format_long = FALSE)
     stats_players_wide %>%
-        dplyr::mutate(plus_minus = pts - pts_opp) %>%
+        dplyr::mutate(plus_minus = .data$pts - .data$pts_opp) %>%
         dplyr::select(
             .data$season,
             .data$game_code,

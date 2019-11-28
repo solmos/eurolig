@@ -35,10 +35,10 @@ getStintStats <- function(pbp, players, format_long = TRUE) {
             type = ifelse(.data$team_code == team, "offense", "defense")
         ) %>%
         dplyr::select(
-            season,
-            game_code,
-            players,
-            type,
+            .data$season,
+            .data$game_code,
+            .data$players,
+            .data$type,
             dplyr::everything()
         )
 
