@@ -17,7 +17,10 @@ extractMultiplePbp <- function(game_codes, season) {
         cat(msg)
         Sys.sleep(2)
     }
-    pbp <- do.call(rbind, pbp_list)
+
+    # Subset games available
+    idx <- sapply(pbp_list, function(x) class(x)[1]) != "try-error"
+    pbp <- do.call(rbind, pbp_list[idx])
 
     pbp
 }
