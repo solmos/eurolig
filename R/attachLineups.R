@@ -48,18 +48,32 @@ attachLineups <- function(pbp) {
         fixLineups()
 }
 
-
+#fixed the function extractStarters
 extractStarters <- function(game_code, season) {
-    base_url <- "https://www.euroleague.net/main/results/showgame?gamecode="
-    path_url <- paste0(game_code, "&seasoncode=E", season, "#!boxscore")
-    boxscore_url <- paste0(base_url, path_url)
-    boxscore_html <- xml2::read_html(boxscore_url)
-
-    starters_names <- boxscore_html %>%
-        rvest::html_nodes(".PlayerStartFive") %>%
-        rvest::html_text()
-
-    starters_names
+    pbp<-extractPbp(game_code = game_code, season = season,lineups=FALSE)
+    
+    players_in1 <- pbp$player_name[pbp$play_type == "IN" & pbp$team_name==unique(pbp$home_team)]
+    players_in2 <- pbp$player_name[pbp$play_type == "IN" & pbp$team_name==unique(pbp$away_team)]
+    
+    players_out1 <- pbp$player_name[pbp$play_type == "OUT" & pbp$team_name==unique(pbp$home_team)]
+    players_out2 <- pbp$player_name[pbp$play_type == "OUT" & pbp$team_name==unique(pbp$away_team)]
+    
+    ind<-rep(1:length(players_out1)) #indicator variable
+    for (i in 1:length(players_out1)){
+      ind[i]<-isTRUE(!(players_out1[i] %in% players_in1[1:(i-1)]))
+    }
+    
+    startersH<-players_out1[ind==1] #starters of home team
+    
+    ind<-rep(1:length(players_out2))
+    for (i in 1:length(players_out2)){
+      ind[i]<-isTRUE(!(players_out2[i] %in% players_in2[1:(i-1)]))
+    }
+    
+    startersA<-players_out2[ind==1] #starters of away team
+    
+    starters<-c(startersH,startersA)
+    starters}
 }
 
 #' Correct lineups in play-by-play data
